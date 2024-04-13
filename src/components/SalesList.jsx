@@ -6,7 +6,6 @@ import SalesTable from './SalesTable';
 const SalesList = () => {
     const dispatch = useDispatch();
     const { sales, loading, error } = useSelector(state => state.sales);
-    console.log(sales)
     useEffect(() => {
         dispatch(fetchSales());
     }, [dispatch]);

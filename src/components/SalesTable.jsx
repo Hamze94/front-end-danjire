@@ -21,9 +21,9 @@ const SalesTable = ({ sales }) => {
 
                 <thead className='border-b border-neutral-200'>
                     <tr>
-                        <th scope="col" className="px-6 py-4">User</th>
-                        <th scope="col" className="px-6 py-4">Products</th>
-                        <th scope="col" className="px-2 py-4">Order Date</th>
+                        <th scope="col" className="px-1 py-1">User</th>
+                        <th scope="col" className="px-1 py-1">Products</th>
+                        <th scope="col" className="px-1 py-1">Order Date</th>
                     </tr>
                 </thead>
                 <tbody>
