@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CiSearch } from "react-icons/ci";
-import { CiUser } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+import { CiUser } from "react-icons/ci";
 import logo from '../assets/1.png'
 
 
 export default function Navbar() {
-    const cartCount = 0
+    const [userName, setUserName] = useState('');
+    const navigate = useNavigate();
+    const cartCount = 0;
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            const decodedToken = jwtDecode(accessToken);
+            setUserName(decodedToken.user._doc.name);
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        navigate('/login');
+    };
+
     return (
         <nav className='bg-gray-100 top-0 sticky z-50'>
             <div className="container pt-5">
@@ -25,23 +42,24 @@ export default function Navbar() {
                         </div>
                     </div>
                     <div className="flex gap-4 md:gap-8 items-center ">
-                        <div className='md:flex gap-3 hidden'>
-                            <div className="rounded-full border-2 border-gray-300 text-gray-500 text-[32px] w-[50px] h-[50px] grid place-items-center">
-                                <CiUser />
+                        {userName ? (
+                            <div className='md:flex gap-3 hidden'>
+                                <div className="rounded-full border-2 border-gray-300 text-gray-500 text-[32px] w-[50px] h-[50px] grid place-items-center">
+                                    <CiUser />
+                                </div>
+                                <div>
+                                    <p className='text-gray-500'>Hello, {userName}</p>
+                                    <button className='font-medium bg-accent text-white   rounded-lg p-0 px-3 cursor-pointer' onClick={handleLogout}>Logout</button>
+                                </div>
+                            </div>
+                        ) : null}
 
-                            </div>
-                            <div>
-                                <p className='text-gray-500 '>Hello, User</p>
-                                <p className='font-medium'>Your account</p>
-                            </div>
-                        </div>
                         <div className="text-gray-500 text-[32px] relative">
                             <IoCartOutline />
                             <div className="absolute top-[-15px] right-[-10px] bg-red-600 w-[25px] h-[25px] rounded-full text-white text-[14px] grid place-items-center">
                                 {
                                     cartCount
                                 }
-
                             </div>
                         </div>
                     </div>
@@ -58,5 +76,5 @@ export default function Navbar() {
                 </div>
             </div>
         </nav>
-    )
+    );
 }
