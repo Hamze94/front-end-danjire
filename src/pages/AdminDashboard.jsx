@@ -1,5 +1,9 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
+import SalesPerMonth from '../components/SalesPerMonth';
+import SalesList from '../components/SalesList';
+import Footer from '../components/Footer';
+
 
 
 const AdminDashboard = () => {
@@ -7,8 +11,7 @@ const AdminDashboard = () => {
         <div>
             <Navbar />
             <div className="container mx-auto mb-2 ">
-                <SalesPerMont />
-                <Deposits />
+                <SalesPerMonth />
                 <h1 className="text-3xl font-semibold mb-4">Admin Dashboard</h1>
                 <div className="grid grid-cols-1 ">
                     <div>
