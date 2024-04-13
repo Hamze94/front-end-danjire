@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSales } from '../redux/features/salesSlice';
 import SalesTable from './SalesTable';
+import Loading from './Loading';
 
 const SalesList = () => {
     const dispatch = useDispatch();
@@ -11,7 +12,7 @@ const SalesList = () => {
     }, [dispatch]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loading />
     }
 
     if (error) {

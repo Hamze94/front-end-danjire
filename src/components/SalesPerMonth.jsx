@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchSalesPerMonth } from '../redux/features/salesSlice';
 import { GiProfit } from "react-icons/gi";
 import DashboardCard from './DashboardCards';
+import Loading from './Loading';
 
 const SalesPerMonth = () => {
     const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const SalesPerMonth = () => {
     }, [dispatch]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loading />
     }
 
     if (error) {

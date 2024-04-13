@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchDeposits } from '../redux/features/transactionsSlice';
 import DashboardCard from './DashboardCards';
 import { RiLuggageDepositFill } from "react-icons/ri";
+import Loading from './Loading';
 
 export default function Deposits() {
     const dispatch = useDispatch();
@@ -12,7 +13,7 @@ export default function Deposits() {
         dispatch(fetchDeposits())
     }, [dispatch]);
     if (loading) {
-        return <div>Loading</div>
+        return <Loading />
     }
     if (error) {
         return <div>Error:{error}</div>
