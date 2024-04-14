@@ -5,6 +5,7 @@ import SalesList from '../components/SalesList';
 import Footer from '../components/Footer';
 import Deposits from '../components/Deposits';
 import Credits from '../components/Credits';
+import Sales from '../components/Sales';
 
 
 
@@ -14,10 +15,10 @@ const AdminDashboard = () => {
             <Navbar />
             <div className="container mx-auto mb-2 ">
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mt-2 ">
-
                     <SalesPerMonth />
                     <Deposits />
                     <Credits />
+                    <Sales />
                 </div>
                 <h1 className="text-3xl font-semibold mb-4">Admin Dashboard</h1>
                 <div className="grid grid-cols-1 ">

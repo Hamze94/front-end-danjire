@@ -10,8 +10,8 @@ const DashboardCard = ({ title, value, percentage, icon }) => {
                     </div>
                     <div className="ml-5 w-0 flex-1">
                         <h3 className="text-lg font-semibold leading-6 text-gray-900">{title}</h3>
-                        <p className="mt-1 text-lg font-semibold text-gray-900 sm:mt-0 sm:col-span-2">${value}</p>
-                        <p className="mt-1 text-sm text-gray-500">({percentage}%)</p>
+                        <p className="mt-1 text-lg font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{value}</p>
+                        <p className="mt-1 text-sm text-gray-500">({percentage})</p>
                     </div>
                 </div>
             </div>

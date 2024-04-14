@@ -21,7 +21,8 @@ export default function Credits() {
     return (
         <DashboardCard
             title="Credits"
-            value={-credits}
+            value={"$ " + -credits}
+            percentage="All"
             icon={<GiTakeMyMoney className='text-3xl  text-white' />} />
     )
 }

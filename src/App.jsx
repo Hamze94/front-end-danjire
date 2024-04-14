@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AdminDashboard from './pages/AdminDashboard';
+import Products from './pages/Products';
 
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/singup" element={<Signup />} />
           <Route path='/admin' element={<AdminDashboard />} />
-
+          <Route path='/shop' element={<Products />} />
         </Routes>
       </Router>
     </Provider>

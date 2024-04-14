@@ -21,7 +21,8 @@ export default function Deposits() {
     return (
         <DashboardCard
             title="Deposits"
-            value={deposits}
+            percentage="All"
+            value={"$ " + deposits}
             icon={<RiLuggageDepositFill className='text-3xl text-white' />} />
     )
 }

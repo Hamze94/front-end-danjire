@@ -23,8 +23,8 @@ const SalesPerMonth = () => {
     return (
         <DashboardCard
             title="Total Profit"
-            value={salesPerMonth} // Pass the fetched data as value
-            percentage="4.35"
+            value={"$ " + salesPerMonth} // Pass the fetched data as value
+            percentage="Month"
             icon={<GiProfit className='text-3xl text-white' />} />);
 };
 export default SalesPerMonth;
