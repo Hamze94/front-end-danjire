@@ -7,12 +7,12 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AdminDashboard from './pages/AdminDashboard';
 import Products from './pages/Products';
+import ProductDetails from './pages/ProductDetails';
+import { useState } from 'react';
 
 
 function App() {
-
   return (
-
     <Provider store={store}>
       <Router>
         <Routes>
@@ -21,6 +21,8 @@ function App() {
           <Route path="/singup" element={<Signup />} />
           <Route path='/admin' element={<AdminDashboard />} />
           <Route path='/shop' element={<Products />} />
+          <Route path="/productdetails/:productId" element={<ProductDetails />} />
+
         </Routes>
       </Router>
     </Provider>
