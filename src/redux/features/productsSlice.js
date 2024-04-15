@@ -32,7 +32,28 @@ export const fetchProducts = createAsyncThunk(
         const response = await axios.get('http://localhost:3000/products');
         return response.data;
     }
+);
+export const updateProduct = createAsyncThunk(
+    'products/updateProduct',
+    async ({ productId, updatedProduct }, { rejectWithValue }) => {
+        try {
+            console.log(productId, updatedProduct)
+            const formData = new FormData();
+            formData.append('name', updatedProduct.name);
+            formData.append('category', updatedProduct.category);
+            formData.append('sellingPrice', updatedProduct.sellingPrice);
+            formData.append('costPrice', updatedProduct.costPrice);
+            formData.append('expireyDate', updatedProduct.expireyDate);
+            formData.append('description', updatedProduct.description);
+            formData.append('image', updatedProduct.image[0]); // Assuming updatedProduct.image is an array containing the uploaded file
+            const response = await axios.put(`http://localhost:3000/products/${productId}/update`, formData);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
 )
+
 export const deleteProduct = createAsyncThunk(
     'products/deleteProduct',
     async (productId, { rejectWithValue }) => {
@@ -67,32 +88,48 @@ const productsSlice = createSlice({
                 state.error = action.error.message;
             })
             .addCase(addProduct.pending, (state) => {
-                state.loading = true;
+                state.Loading = true; // Corrected casing here
                 state.error = null;
             })
             .addCase(addProduct.fulfilled, (state, action) => {
-                state.loading = false;
-                state.products = action.payload;
+                state.Loading = false;
+                state.products.push(action.payload); // Append the new product to the existing array
             })
             .addCase(addProduct.rejected, (state, action) => {
-                state.loading = false;
+                state.Loading = false; // Corrected casing here
                 state.error = action.error.message;
             })
             .addCase(deleteProduct.pending, (state) => {
-                state.loading = true;
+                state.Loading = true; // Corrected casing here
                 state.error = null;
             })
             .addCase(deleteProduct.fulfilled, (state, action) => {
-                state.loading = false;
+                state.Loading = false;
                 state.products = state.products.filter(product => product._id !== action.payload._id);
             })
             .addCase(deleteProduct.rejected, (state, action) => {
-                state.loading = false;
+                state.Loading = false; // Corrected casing here
                 state.error = action.error.message;
+            })
+            .addCase(updateProduct.pending, (state) => {
+                state.Loading = true; // Corrected casing here
+                state.error = null;
+            })
+            .addCase(updateProduct.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.products = state.products.map(product => {
+                    if (product._id === action.payload._id) {
+                        return action.payload;
+                    }
+                    return product;
+                });
+            })
+            .addCase(updateProduct.rejected, (state, action) => {
+                state.Loading = false;
+                state.error = action.payload ? action.payload.message : 'Failed to update product';
             });
-
     }
 });
 
-export const productsActions = { fetchProducts, addProduct, deleteProduct }
+export const productsActions = { fetchProducts, addProduct, deleteProduct, updateProduct }
 export default productsSlice.reducer;

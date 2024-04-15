@@ -1,22 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { addProduct } from '../redux/features/productsSlice';
+import { addProduct, updateProduct } from '../redux/features/productsSlice';
 import { FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-export default function AddProductModel({ onClose }) {
+export default function AddProductModel({ onClose, updateProductData }) {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(true);
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm();
-    const onSubmit = (data) => {
-        dispatch(addProduct({ productData: data }));
-        onClose();
-        navigate('/shop')
 
+    const onSubmit = (data) => {
+        if (updateProductData) {
+            dispatch(updateProduct({ productId: updateProductData._id, updatedProduct: data }));
+        } else {
+            dispatch(addProduct({ productData: data }));
+        }
+        onClose();
+        navigate('/shop');
     };
+
+    useEffect(() => {
+        if (updateProductData) {
+            setValue('name', updateProductData.name);
+            setValue('category', updateProductData.category);
+            setValue('description', updateProductData.description);
+            setValue('sellingPrice', updateProductData.sellingPrice);
+            setValue('costPrice', updateProductData.costPrice);
+            setValue('image', updateProductData.image); // Update image handling might be needed
+            setValue('expireyDate', new Date(updateProductData.expireyDate)); // Convert expireyDate to a Date object
+            // Check if an image is available
+            if (updateProductData.image) {
+                // Create a new File object with the image URL
+                const imageFile = new File([null], updateProductData.image, { type: 'image/*' });
+                setValue('image', imageFile);
+            } else {
+                // Handle case where image is null or undefined
+                setValue('image', null); // Set image to null or some default value
+            }
+        }
+
+
+    }, [updateProductData, setValue]);
     const handleCloseModal = () => {
         setShowModal(false);
     };
@@ -80,7 +107,7 @@ export default function AddProductModel({ onClose }) {
                                 />
                                 {errors.expireyDate && <span className="text-red-500">{errors.expireyDate.message}</span>}
                             </div>
-                            <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Add Product</button>
+                            <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ">Submit</button>
                         </form>
                     </div>
                 </div>
