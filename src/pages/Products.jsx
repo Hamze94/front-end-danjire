@@ -84,8 +84,9 @@ const Products = () => {
                                 Add Product
                             </button>
                             <button className="flex items-center bg-green-500 text-white px-4 py-2 rounded-md">
-                                <FaList className="mr-2" />
-                                List Products
+                                <FaList className="mr-2 " />
+                                {products.length}
+                                Products
                             </button>
                         </div>
                         {/* Product Cards */}

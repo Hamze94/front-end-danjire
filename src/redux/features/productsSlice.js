@@ -60,10 +60,15 @@ export const deleteProduct = createAsyncThunk(
         try {
             console.log(productId)
             const response = await axios.delete(`http://localhost:3000/products/${productId}/delete`);
-            console.log(response)
-            return response.data;
+            console.log(response); // Add this line
+            if (response && response.data) {
+                return response.data;
+            } else {
+                throw new Error('Failed to delete product');
+            }
         } catch (error) {
-            return rejectWithValue(error.response.data);
+            console.error(error); // Add this line for additional debugging
+            return rejectWithValue(error.response?.data);
         }
     }
 )
