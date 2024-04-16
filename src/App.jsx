@@ -9,6 +9,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
 import { useState } from 'react';
+import CartPage from './pages/CartPage';
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
           <Route path='/admin' element={<AdminDashboard />} />
           <Route path='/shop' element={<Products />} />
           <Route path="/productdetails/:productId" element={<ProductDetails />} />
-
+          <Route path='/cart' element={<CartPage />} />
         </Routes>
       </Router>
     </Provider>

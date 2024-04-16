@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { CiSearch } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import { CiUser } from "react-icons/ci";
 import logo from '../assets/1.png'
+import { useSelector } from 'react-redux';
 
 
 export default function Navbar() {
+    const { items } = useSelector((state) => state.items)
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
-    const cartCount = 0;
-
+    let cartCount = items.length;
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
         if (accessToken) {
@@ -55,12 +56,12 @@ export default function Navbar() {
                         ) : null}
 
                         <div className="text-gray-500 text-[32px] relative">
-                            <IoCartOutline />
-                            <div className="absolute top-[-15px] right-[-10px] bg-red-600 w-[25px] h-[25px] rounded-full text-white text-[14px] grid place-items-center">
-                                {
-                                    cartCount
-                                }
-                            </div>
+                            <Link to="/cart" className="text-gray-500 text-[32px] relative">
+                                <IoCartOutline />
+                                <div className="absolute top-[-15px] right-[-10px] bg-red-600 w-[25px] h-[25px] rounded-full text-white text-[14px] grid place-items-center">
+                                    {cartCount}
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </div>

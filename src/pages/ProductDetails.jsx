@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FaHeart, FaShoppingCart } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Loading from '../components/Loading';
+import { addItem } from '../redux/features/cartSlice'; // Import the addItem action
+
 const myProducts = [
     {
         id: 1,
@@ -68,10 +70,14 @@ const myProducts = [
     },
 ];
 const ProductDetails = () => {
+    const dispatch = useDispatch();
     const { productId } = useParams();
     const { products } = useSelector(state => state.products);
     const [product, setProduct] = useState(null);
-
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product));
+        console.log("clicked", product)
+    };
     useEffect(() => {
         // Find the product with the matching productId
         const selectedProduct = products.find(product => product._id === (productId));
@@ -98,7 +104,7 @@ const ProductDetails = () => {
                                 <span className="mr-2">Quantity:</span>
                                 <input type="number" className="border border-gray-300 px-4 py-2 w-16 rounded" defaultValue="1" min="1" />
                             </div>
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-4">Add to Cart</button>
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-4" onClick={() => handleAddToCart(product)}>Add to Cart</button>
                             <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md">Add to Wishlist</button>
                         </div>
                     </div>
