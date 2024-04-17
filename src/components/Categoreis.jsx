@@ -6,7 +6,9 @@ import Loading from './Loading';
 import { MdDeleteOutline } from 'react-icons/md';
 import { GrUpdate } from 'react-icons/gr';
 import AddCategoryModel from './AddCategoryModel';
+import { useIsAdmin } from '../auth';
 export default function Categoreis() {
+    const isAdmin = useIsAdmin()
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
     const { categories, loading, error } = useSelector(state => state.categoreis)
@@ -27,10 +29,12 @@ export default function Categoreis() {
         <div>
             {/* Sidebar */}
             <div className="md:col-span-1 h-screen overflow-y-auto mb-6 md:mb-0">
-                <button className="flex items-center bg-pink text-white px-4 py-2 rounded-md mb-4" onClick={handleToggleModal}>
-                    <FaPlus className="mr-2" />
-                    Add Category
-                </button>
+                {isAdmin && (
+                    <button className="flex items-center bg-pink text-white px-4 py-2 rounded-md mb-4" onClick={handleToggleModal}>
+                        <FaPlus className="mr-2" />
+                        Add Category
+                    </button>
+                )}
                 <div className="bg-white rounded-md shadow-md">
                     <div className="p-4 border-b border-gray-300">
                         <h2 className="text-lg font-semibold mb-2">Categories</h2>
@@ -39,9 +43,14 @@ export default function Categoreis() {
                         {categories.map(category => (
                             <li key={category._id} className="border-b border-gray-300">
                                 <div className="flex justify-between px-2 items-center">
-                                    <MdDeleteOutline className="text-pink text-2xl hover:text-blue-600 cursor-pointer" />
                                     <a href="#" className="block py-2 px-4 hover:bg-gray-200">{category.name}</a>
-                                    <GrUpdate className="text-accent hover:text-blue-600 cursor-pointer" />
+                                    {isAdmin && (
+                                        <div className="flex space-x-2">
+                                            <MdDeleteOutline className="text-pink text-2xl hover:text-blue-600 cursor-pointer" />
+                                            <GrUpdate className="text-accent hover:text-blue-600 cursor-pointer" />
+                                        </div>
+                                    )}
+
                                 </div >
                             </li>
                         ))}

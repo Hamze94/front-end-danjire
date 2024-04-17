@@ -4,14 +4,16 @@ import { IoCartOutline } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import { CiUser } from "react-icons/ci";
+import { logoutUser } from "../redux/features/authSlice"
 import logo from '../assets/1.png'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function Navbar() {
     const { items } = useSelector((state) => state.items)
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     let cartCount = items.length;
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
@@ -22,6 +24,7 @@ export default function Navbar() {
     }, []);
 
     const handleLogout = () => {
+        dispatch(logoutUser())
         localStorage.removeItem('accessToken');
         navigate('/login');
     };
@@ -31,10 +34,10 @@ export default function Navbar() {
             <div className="container pt-5">
                 <div className="justify-between gap-2 items-center grid grid-cols-1 md w-full  md:grid-cols-2 lg:grid-cols-3">
                     <div>
-                        <a href="/" className='font-bold text-2xl sm:text-3xl   flex gap-2'>
+                        <Link to="/" className='font-bold text-2xl sm:text-3xl   flex gap-2'>
                             <img src={logo} alt="" srcSet="" className='w-10' />
                             Danjire <span className=' tracking-tighter text-2xl sm:text-3xl font-thin text-accent'>Grocery</span>
-                        </a>
+                        </Link>
                     </div>
                     <div className="lg:flex  w-full max-w-full  rounded-md">
                         <input className='border-2 rounded-l-lg  border-accent px-6 py-2 w-full' type="text" placeholder='Baadh Alaabta' />
@@ -69,8 +72,8 @@ export default function Navbar() {
 
                 <div className="bg-accent flex overflow-x-auto md:overflow-x-hidden rounded-md">
                     <ul className="container flex gap-8 uppercase py-4 text-white">
-                        <a href="">Home</a>
-                        <a href="">Shop</a>
+                        <a href="/">Home</a>
+                        <a href="/shop">Shop</a>
                         <a href="">Contact Us</a>
                         <a href="">About Us</a>
                     </ul>

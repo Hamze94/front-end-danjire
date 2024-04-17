@@ -7,7 +7,7 @@ import categoriesReducer from "./features/categoriesSlice";
 import itemesReducer from './features/cartSlice'
 export const store = configureStore({
     reducer: {
-        authReducer,
+        auth: authReducer,
         sales: salesReducer,
         transactions: transnctionReducer,
         products: productsReducer,

@@ -6,10 +6,16 @@ import Footer from '../components/Footer';
 import Deposits from '../components/Deposits';
 import Credits from '../components/Credits';
 import Sales from '../components/Sales';
+import { useIsAdmin } from '../auth';
 
 
 
 const AdminDashboard = () => {
+    const isAdmin = useIsAdmin();
+    if (!isAdmin) {
+        return <><Navbar /> <div className='container p-10 h-12'><p>You are not authorized to access this page.</p></div>  <Footer /></>;
+    }
+
     return (
         <div>
             <Navbar />
