@@ -28,13 +28,31 @@ export const updateCategory = createAsyncThunk(
     'categories/updateCategory',
     async ({ categoryId, updatedCategory }, { rejectWithValue }) => {
         try {
-            const response = await axios.put(`http://localhost:3000/categories/${categoryId}`, updatedCategory);
+            const response = await axios.put(`http://localhost:3000/categories/${categoryId}/update`, updatedCategory);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
     }
 );
+export const deleteCategory = createAsyncThunk(
+    'categoriess/deleteCatgory',
+    async (categoryId, { rejectWithValue }) => {
+        try {
+            console.log(categoryId)
+            const response = await axios.delete(`http://localhost:3000/categories/${categoryId}/delete`);
+            console.log(response); // Add this line
+            if (response && response.data) {
+                return response.data;
+            } else {
+                throw new Error('Failed to delete category');
+            }
+        } catch (error) {
+            console.error(error); // Add this line for additional debugging
+            return rejectWithValue(error.response?.data);
+        }
+    }
+)
 const categoreisSlice = createSlice({
     name: 'categories',
     initialState,
@@ -81,9 +99,21 @@ const categoreisSlice = createSlice({
             .addCase(updateCategory.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload ? action.payload.message : 'Failed to update category';
-            });
+            })
+            .addCase(deleteCategory.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteCategory.fulfilled, (state, action) => {
+                state.loading = false;
+                state.categories = state.categories.filter(category => category._id !== action.payload._id);
+            })
+            .addCase(deleteCategory.rejected, (state, action) => {
+                state.loading = false; // Corrected casing here
+                state.error = action.error.message;
+            })
     }
 });
 
-export const categoreyActions = { fetchCategories, addCategory, updateCategory };
+export const categoreyActions = { fetchCategories, addCategory, updateCategory, deleteCategory };
 export default categoreisSlice.reducer

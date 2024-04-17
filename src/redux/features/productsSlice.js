@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const initialState = {
     products: [],
-    Loading: false,
+    loading: false,
     error: null,
 };
 export const addProduct = createAsyncThunk(
@@ -81,47 +81,47 @@ const productsSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchProducts.pending, (state) => {
-                state.Loading = true;
+                state.loading = true;
                 state.error = null;
             })
             .addCase(fetchProducts.fulfilled, (state, action) => {
-                state.Loading = false;
+                state.loading = false;
                 state.products = action.payload;
             })
             .addCase(fetchProducts.rejected, (state, action) => {
-                state.Loading = false;
+                state.loading = false;
                 state.error = action.error.message;
             })
             .addCase(addProduct.pending, (state) => {
-                state.Loading = true; // Corrected casing here
+                state.loading = true; // Corrected casing here
                 state.error = null;
             })
             .addCase(addProduct.fulfilled, (state, action) => {
-                state.Loading = false;
+                state.loading = false;
                 state.products.push(action.payload); // Append the new product to the existing array
             })
             .addCase(addProduct.rejected, (state, action) => {
-                state.Loading = false; // Corrected casing here
+                state.loading = false; // Corrected casing here
                 state.error = action.error.message;
             })
             .addCase(deleteProduct.pending, (state) => {
-                state.Loading = true; // Corrected casing here
+                state.loading = true; // Corrected casing here
                 state.error = null;
             })
             .addCase(deleteProduct.fulfilled, (state, action) => {
-                state.Loading = false;
+                state.loading = false;
                 state.products = state.products.filter(product => product._id !== action.payload._id);
             })
             .addCase(deleteProduct.rejected, (state, action) => {
-                state.Loading = false; // Corrected casing here
+                state.loading = false; // Corrected casing here
                 state.error = action.error.message;
             })
             .addCase(updateProduct.pending, (state) => {
-                state.Loading = true; // Corrected casing here
+                state.loading = true; // Corrected casing here
                 state.error = null;
             })
             .addCase(updateProduct.fulfilled, (state, action) => {
-                state.Loading = false;
+                state.loading = false;
                 state.products = state.products.map(product => {
                     if (product._id === action.payload._id) {
                         return action.payload;
@@ -130,7 +130,7 @@ const productsSlice = createSlice({
                 });
             })
             .addCase(updateProduct.rejected, (state, action) => {
-                state.Loading = false;
+                state.loading = false;
                 state.error = action.payload ? action.payload.message : 'Failed to update product';
             });
     }
