@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         accent: "#0989ff",
-        pink: "#FD4B6B"
+        pink: "#00bfa5"
       },
       container: {
         center: true,

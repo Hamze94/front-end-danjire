@@ -5,6 +5,7 @@ import transnctionReducer from './features/transactionsSlice'
 import productsReducer from './features/productsSlice'
 import categoriesReducer from "./features/categoriesSlice";
 import itemesReducer from './features/cartSlice'
+import usersReducer from './features/usersSlice'
 export const store = configureStore({
     reducer: {
         auth: authReducer,
@@ -12,6 +13,7 @@ export const store = configureStore({
         transactions: transnctionReducer,
         products: productsReducer,
         categoreis: categoriesReducer,
-        items: itemesReducer
+        items: itemesReducer,
+        users: usersReducer
     }
 });

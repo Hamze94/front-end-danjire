@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
+import { removeItem } from "./cartSlice";
 
 const initialState = {
     products: [],
     loading: false,
     error: null,
+    searchQuery: '',
 };
 export const addProduct = createAsyncThunk(
     'products/addProduct',
@@ -58,9 +60,7 @@ export const deleteProduct = createAsyncThunk(
     'products/deleteProduct',
     async (productId, { rejectWithValue }) => {
         try {
-            console.log(productId)
             const response = await axios.delete(`http://localhost:3000/products/${productId}/delete`);
-            console.log(response); // Add this line
             if (response && response.data) {
                 return response.data;
             } else {
@@ -72,12 +72,25 @@ export const deleteProduct = createAsyncThunk(
         }
     }
 )
-
+export const selectFilteredProducts = state => {
+    const searchQuery = state.products.searchQuery.toLowerCase();
+    return state.products.products.filter(product =>
+        product.name.toLowerCase().includes(searchQuery)
+    );
+};
+export const setSearchQuery = (searchQuery) => ({
+    type: 'products/setSearchQuery',
+    payload: searchQuery,
+});
 
 const productsSlice = createSlice({
     name: 'products',
     initialState,
-    reducers: {},
+    reducers: {
+        setSearchQuery(state, action) {
+            state.searchQuery = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchProducts.pending, (state) => {
@@ -110,7 +123,9 @@ const productsSlice = createSlice({
             })
             .addCase(deleteProduct.fulfilled, (state, action) => {
                 state.loading = false;
-                state.products = state.products.filter(product => product._id !== action.payload._id);
+                const deletedProductId = action.payload._id;
+                state.products = state.products.filter(product => product._id !== deletedProductId);
+                removeItem(deletedProductId);
             })
             .addCase(deleteProduct.rejected, (state, action) => {
                 state.loading = false; // Corrected casing here
@@ -136,5 +151,5 @@ const productsSlice = createSlice({
     }
 });
 
-export const productsActions = { fetchProducts, addProduct, deleteProduct, updateProduct }
+export const productsActions = { fetchProducts, addProduct, deleteProduct, updateProduct, setSearchQuery }
 export default productsSlice.reducer;

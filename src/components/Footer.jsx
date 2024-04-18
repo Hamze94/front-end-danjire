@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const Footer = () => {
     return (
@@ -12,9 +13,9 @@ const Footer = () => {
                         </div>
                         <div className="text-center md:text-left">
                             <h3 className="text-lg font-semibold text-white  mb-4">Contact</h3>
-                            <p className="">123 Street, City, Country</p>
-                            <p className="">email@example.com</p>
-                            <p className="">+123 456 789</p>
+                            <p className="">Hodan Barwqo Street, Burao, Somalia</p>
+                            <p className="">Danjire@gmail.com</p>
+                            <p className="">+252 63 456 789</p>
                         </div>
                         <div className="text-center md:text-left">
                             <h3 className="text-lg font-semibold mb-4">Categories</h3>
@@ -28,12 +29,15 @@ const Footer = () => {
                         <div className="text-center md:text-left">
                             <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
                             <div className="flex items-center justify-center md:justify-start">
-
+                                <FaFacebook size={32} className=' bg-accent' />
+                                <FaTwitter size={32} color="#00acee" />
+                                <FaInstagram size={32} color="#e4405f" />
+                                <FaLinkedin size={32} className='bg-accent' />
                             </div>
                         </div>
                     </div>
                     <div className="mt-6 text-center text-white ">
-                        <p>&copy; 2024 Your Company. All rights reserved.</p>
+                        <p>&copy; 2024 Danjire Grocery Store. All rights reserved.</p>
                     </div>
                 </div>
             </div>

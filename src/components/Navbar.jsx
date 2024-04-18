@@ -74,8 +74,8 @@ export default function Navbar() {
                     <ul className="container flex gap-8 uppercase py-4 text-white">
                         <a href="/">Home</a>
                         <a href="/shop">Shop</a>
-                        <a href="">Contact Us</a>
-                        <a href="">About Us</a>
+                        <a href="/users">users</a>
+                        <a href="/admin">Admin</a>
                     </ul>
                 </div>
             </div>

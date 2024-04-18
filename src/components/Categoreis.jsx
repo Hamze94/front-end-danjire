@@ -41,7 +41,6 @@ export default function Categoreis() {
     };
     const handleUpdateClick = (category) => {
         if (isAdmin) {
-            // Check for admin before updating
             setSelectedCategory(category);
             setShowModal(true);
         } else {

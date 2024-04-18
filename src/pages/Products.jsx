@@ -42,7 +42,9 @@ const Products = () => {
         setShowModal(!showModal);
         setSelectedProduct(null); // Clear selected product when closing modal
     };
-
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product));
+    };
     const handleDeleteProduct = (productId) => {
         if (isAdmin) {
             // Check for admin before deleting
@@ -64,7 +66,8 @@ const Products = () => {
         if (isAdmin) {
             // Check for admin before updating
             setSelectedProduct(product);
-            setShowModal(true);
+            console.log("edit" + showModal)
+            setShowModal(!showModal);
         } else {
             console.warn("You are not authorized to update products");
         }
