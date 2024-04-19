@@ -1,11 +1,11 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
-import SalesPerMonth from '../components/SalesPerMonth';
-import SalesList from '../components/SalesList';
+import SalesPerMonth from '../components/orders/SalesPerMonth';
+import SalesList from '../components/orders/SalesList';
 import Footer from '../components/Footer';
-import Deposits from '../components/Deposits';
-import Credits from '../components/Credits';
-import Sales from '../components/Sales';
+import Deposits from '../components/transtions/Deposits';
+import Credits from '../components/transtions/Credits';
+import Sales from '../components/orders/Sales';
 import { useIsAdmin } from '../auth';
 
 

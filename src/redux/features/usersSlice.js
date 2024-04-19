@@ -27,7 +27,26 @@ export const addUser = createAsyncThunk(
         return response.data;
     }
 );
-
+export const fetchUserOrdersWithProducts = createAsyncThunk(
+    'users/fetchUserOrdersWithProducts',
+    async (userId, { dispatch }) => {
+        const userOrders = await fetchUserOrders(userId); // Fetch user orders
+        // For each order, fetch product details and update the order object
+        await Promise.all(
+            userOrders.map(async (order) => {
+                const productsWithDetails = await Promise.all(
+                    order.products.map(async (productId) => {
+                        const product = await dispatch(fetchProductById(productId));
+                        return product.payload; // Assuming fetchProductById returns product details
+                    })
+                );
+                order.products = productsWithDetails;
+                return order;
+            })
+        );
+        return userOrders;
+    }
+);
 // Async thunk to update a user
 export const updateUser = createAsyncThunk(
     'users/updateUser',
@@ -42,6 +61,7 @@ export const fetchUserOrders = createAsyncThunk(
     async (userId) => {
         const response = await axios.get(`http://localhost:3000/orders/${userId}`);
         return response.data;
+
     }
 );
 
@@ -114,12 +134,13 @@ const userSlice = createSlice({
             })
             .addCase(fetchUserOrders.fulfilled, (state, action) => {
                 state.loading = false;
-                state.userOrders = action.payload;
+                state.userOrders.push(action.payload);
             })
             .addCase(fetchUserOrders.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-            });
+            })
+
     }
 });
 

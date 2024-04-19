@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategories, deleteCategory } from "../redux/features/categoriesSlice";
+import { fetchCategories, deleteCategory } from "../../redux/features/categoriesSlice";
 import { FaPlus } from "react-icons/fa";
-import Loading from "./Loading";
+import Loading from "../Loading";
 import { MdDeleteOutline } from "react-icons/md";
 import { GrUpdate } from "react-icons/gr";
 import AddCategoryModel from "./AddCategoryModel";
-import { useIsAdmin } from "../auth";
+import { useIsAdmin } from "../../auth";
 export default function Categoreis() {
     const isAdmin = useIsAdmin();
     const dispatch = useDispatch();

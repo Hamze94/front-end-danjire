@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { addProduct, updateProduct } from '../redux/features/productsSlice';
+import { addProduct, updateProduct } from '../../redux/features/productsSlice';
 import { FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';

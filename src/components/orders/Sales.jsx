@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import DashboardCard from './DashboardCards';
+import DashboardCard from '../DashboardCards';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from './Loading';
-import { fetchSales } from '../redux/features/salesSlice';
+import Loading from '../Loading';
+import { fetchSales } from '../../redux/features/salesSlice';
 import { MdProductionQuantityLimits } from "react-icons/md";
 
 export default function Sales() {

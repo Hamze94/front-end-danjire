@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { addUser, updateUser } from '../redux/features/usersSlice'; // Import the addUser and updateUser actions
+import { addUser, updateUser } from '../../redux/features/usersSlice'; // Import the addUser and updateUser actions
 import { FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -10,17 +10,28 @@ export default function AddUserModel({ onClose, updateUserData }) {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(true);
     const dispatch = useDispatch();
+    const [error, setError] = useState(null); // State to manage error messages
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
 
-    const onSubmit = (data) => {
-        if (updateUserData) {
-            dispatch(updateUser({ userId: updateUserData._id, updatedUser: data }));
-        } else {
-            dispatch(addUser(data));
+    const onSubmit = async (data) => {
+        try {
+            if (updateUserData) {
+                await dispatch(updateUser({ userId: updateUserData._id, updatedUser: data })).unwrap();
+            } else {
+                await dispatch(addUser(data)).unwrap();
+            }
+            onClose();
+            navigate('/users');
+        } catch (error) {
+            if (error.response && error.response.data.message === 'User Exsit') {
+                setError('User already exists.'); // Handle the specific error message
+            } else {
+                setError('An error occurred. Please try again.'); // Generic error message for other errors
+            }
         }
-        onClose();
-        navigate('/user'); // Navigate to the appropriate route after submission
     };
+
+
 
     useEffect(() => {
         if (updateUserData) {
@@ -48,6 +59,7 @@ export default function AddUserModel({ onClose, updateUserData }) {
                             <FaTimes />
                         </button>
                     </div>
+                    {error && <div className="mb-4 text-red-500">{error}</div>} {/* Display error message */}
                     <div className="max-h-96 overflow-y-auto">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="mb-4">

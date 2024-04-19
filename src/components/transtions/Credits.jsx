@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAllUsers } from '../redux/features/usersSlice';
-import DashboardCard from './DashboardCards';
+import { fetchCredits } from '../../redux/features/transactionsSlice';
+import DashboardCard from '../DashboardCards';
 import { GiTakeMyMoney } from "react-icons/gi";
-import Loading from './Loading';
+import Loading from '../Loading';
 
-export default function Users() {
+export default function Credits() {
     const dispatch = useDispatch();
-    const { users, loading, error } = useSelector(state => state.users);
+    const { credits, loading, error } = useSelector(state => state.transactions);
+    console.log(credits)
     useEffect(() => {
-        dispatch(fetchAllUsers())
+        dispatch(fetchCredits())
     }, [dispatch]);
     if (loading) {
         return <Loading />
@@ -19,8 +20,8 @@ export default function Users() {
     }
     return (
         <DashboardCard
-            title="Users"
-            value={users.length}
+            title="Credits"
+            value={"$ " + -credits}
             percentage="All"
             icon={<GiTakeMyMoney className='text-3xl  text-white' />} />
     )

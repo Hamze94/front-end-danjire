@@ -3,6 +3,7 @@ import axios from 'axios';
 const initialState = {
     deposits: null,
     credits: null,
+    userTransactions: [],
     loading: false,
     error: null,
 }
@@ -17,6 +18,13 @@ export const fetchCredits = createAsyncThunk(
     'transactions/fetchCredits',
     async () => {
         const response = await axios.get('http://localhost:3000/transactions/credits');
+        return response.data;
+    }
+);
+export const fetchUserTransactions = createAsyncThunk(
+    'transactions/fetchUserTransactions',
+    async (userId) => {
+        const response = await axios.get(`http://localhost:3000/transactions/user/${userId}`);
         return response.data;
     }
 );
@@ -50,9 +58,21 @@ const transactionsSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             })
+            .addCase(fetchUserTransactions.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUserTransactions.fulfilled, (state, action) => {
+                state.loading = false;
+                state.userTransactions = action.payload;
+            })
+            .addCase(fetchUserTransactions.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            });
 
 
     }
 });
-export const transactionActions = { fetchCredits, fetchDeposits };
+export const transactionActions = { fetchCredits, fetchDeposits, fetchUserTransactions };
 export default transactionsSlice.reducer;

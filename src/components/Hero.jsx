@@ -10,7 +10,7 @@ export default function Hero() {
                         <p className="text-gray-700 text-lg mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget risus sed nisi dapibus porttitor.</p>
                         <div className="space-x-4">
                             <button className="bg-accent hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md transition duration-300">Shop Now</button>
-                            <button className="bg-gray-700 hover:bg-gray-800 text-white py-2 px-6 rounded-lg shadow-md transition duration-300">Learn More</button>
+                            <button className="bg-pink hover:bg-gray-800 text-white py-2 px-6 rounded-lg shadow-md transition duration-300">Learn More</button>
                         </div>
                     </div>
                 </div>

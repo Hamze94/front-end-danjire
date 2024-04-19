@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useIsAdmin } from "../auth";
-import Users from "../components/Users";
 import { FaPlus } from "react-icons/fa";
-import AddUserModel from "../components/AddUserModel";
-import UserList from "../components/UsersList";
+import AddUserModel from "../components/user/AddUserModel";
+import UserList from "../components/user/UsersList";
+import Users from "../components/user/Users";
 
 export default function User() {
     const [showModal, setShowModal] = useState(false);

@@ -5,11 +5,11 @@ import Loading from "../components/Loading";
 import { FaPlus, FaList } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import AddProductModel from "../components/AddProductModel";
+import AddProductModel from "../components/product/AddProductModel";
 import { MdDeleteOutline } from "react-icons/md";
 import { IoCartOutline } from "react-icons/io5";
 import { GrUpdate } from "react-icons/gr";
-import Categoreis from "../components/Categoreis";
+import Categoreis from "../components/category/Categoreis";
 import ProductDetails from "./ProductDetails";
 import { Link } from "react-router-dom";
 import { addItem } from "../redux/features/cartSlice"; // Import the addItem action

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchDeposits } from '../redux/features/transactionsSlice';
-import DashboardCard from './DashboardCards';
+import { fetchDeposits } from '../../redux/features/transactionsSlice';
+import DashboardCard from '../DashboardCards';
 import { RiLuggageDepositFill } from "react-icons/ri";
-import Loading from './Loading';
+import Loading from '../Loading';
 
 export default function Deposits() {
     const dispatch = useDispatch();

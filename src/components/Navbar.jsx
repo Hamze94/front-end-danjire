@@ -53,7 +53,7 @@ export default function Navbar() {
                                 </div>
                                 <div>
                                     <p className='text-gray-500'>Hello, {userName}</p>
-                                    <button className='font-medium bg-accent text-white   rounded-lg p-0 px-3 cursor-pointer' onClick={handleLogout}>Logout</button>
+                                    <button className='  bg-accent w-full text-white   rounded-lg pb-1 px-3 cursor-pointer' onClick={handleLogout}>Logout</button>
                                 </div>
                             </div>
                         ) : null}

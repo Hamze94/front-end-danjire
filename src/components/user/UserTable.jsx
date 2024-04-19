@@ -94,8 +94,8 @@ const UserTable = ({ users }) => {
                         <button
                             key={i + 1}
                             className={`px-1 py-1 border border-gray-300 rounded-md focus:outline-none ${currentPage === i + 1
-                                    ? "bg-blue-500 text-white"
-                                    : "bg-white text-gray-700 hover:bg-gray-100"
+                                ? "bg-blue-500 text-white"
+                                : "bg-white text-gray-700 hover:bg-gray-100"
                                 }`}
                             onClick={() => handlePageChange(i + 1)}
                         >

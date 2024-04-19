@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAllUsers } from '../redux/features/usersSlice';
+import { fetchAllUsers } from '../../redux/features/usersSlice';
 import UserTable from './UserTable';
-import Loading from './Loading';
+import Loading from '../Loading';
 
 const UserList = () => {
     const dispatch = useDispatch();

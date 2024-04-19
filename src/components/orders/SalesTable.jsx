@@ -18,7 +18,6 @@ const SalesTable = ({ sales }) => {
     return (
         <div className='container mx-auto text-center bg-white rounded-md shadow-md overflow-x-auto'>
             <table className="min-w-max w-full table-auto">
-
                 <thead className='border-b border-neutral-200'>
                     <tr>
                         <th scope="col" className="px-1 py-1">User</th>

@@ -4,7 +4,7 @@ import { removeItem } from "./cartSlice";
 
 const initialState = {
     products: [],
-    loading: false,
+    loading: true,
     error: null,
     searchQuery: '',
 };
@@ -82,6 +82,18 @@ export const setSearchQuery = (searchQuery) => ({
     type: 'products/setSearchQuery',
     payload: searchQuery,
 });
+export const fetchProductById = createAsyncThunk(
+    'products/fetchById',
+    async (productId, thunkAPI) => {
+        try {
+            const response = await axios.get(`http://localhost:3000/products/${productId}`);
+            return response.data; // Return the fetched product details
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+);
+
 
 const productsSlice = createSlice({
     name: 'products',
@@ -147,9 +159,23 @@ const productsSlice = createSlice({
             .addCase(updateProduct.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload ? action.payload.message : 'Failed to update product';
+            })
+            .addCase(fetchProductById.pending, (state) => {
+                state.loading = true;
+            })
+            // Handle success state after fetching product details
+            .addCase(fetchProductById.fulfilled, (state, action) => {
+                state.loading = false;
+                // Add the fetched product to the state
+                state.products.push(action.payload);
+            })
+            // Handle error state if fetching product details fails
+            .addCase(fetchProductById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload; // Set the error message
             });
     }
 });
 
-export const productsActions = { fetchProducts, addProduct, deleteProduct, updateProduct, setSearchQuery }
+export const productsActions = { fetchProducts, fetchProductById, addProduct, deleteProduct, updateProduct, setSearchQuery }
 export default productsSlice.reducer;
