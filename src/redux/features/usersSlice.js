@@ -47,6 +47,7 @@ export const fetchUserOrdersWithProducts = createAsyncThunk(
         return userOrders;
     }
 );
+
 // Async thunk to update a user
 export const updateUser = createAsyncThunk(
     'users/updateUser',
@@ -65,8 +66,24 @@ export const fetchUserOrders = createAsyncThunk(
     }
 );
 
+export const fetchUserCard = createAsyncThunk(
+    'cards/fetchUserCard',
+    async (userId, { getState }) => {
+        const token = getState().auth;
+        console.log(token)// Get authentication token from the state
+        const response = await axios.get(`http://localhost:3000/cards/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(response.data)
+        return response.data;
+    }
+);
+
 const initialState = {
     users: [],
+    card: null,
     userOrders: [],
     loading: false,
     error: null,
@@ -140,6 +157,17 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             })
+            .addCase(fetchUserCard.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchUserCard.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.card = action.payload;
+            })
+            .addCase(fetchUserCard.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            });
 
     }
 });

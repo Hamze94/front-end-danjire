@@ -22,7 +22,17 @@ export const fetchSalesPerMonth = createAsyncThunk(
         return response.data;
     }
 );
-
+export const createOrder = createAsyncThunk(
+    'orders/createOrder',
+    async (orderData) => {
+        try {
+            const response = await axios.post('http://localhost:3000/orders/create', orderData);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message);
+        }
+    }
+);
 const salesSlice = createSlice({
     name: 'sales',
     initialState,

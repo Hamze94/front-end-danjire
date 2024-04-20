@@ -28,7 +28,7 @@ const TransactionList = ({ userId }) => {
                 </thead>
                 <tbody>
                     {userTransactions.map((transaction) => (
-                        <tr key={transaction._id} className={`border-b text-white border-gray-200 ${transaction.type === 'deposit' ? 'bg-accent' : 'bg-pink'}`}>
+                        <tr key={transaction._id} className={`border-b  border-gray-200 ${transaction.type === 'deposit' ? 'bg-gray-50' : 'bg-red-100'}`}>
                             <td className="px-6 py-4 whitespace-nowrap">${transaction.amount}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{new Date(transaction.date).toLocaleDateString()}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{transaction.type}</td>

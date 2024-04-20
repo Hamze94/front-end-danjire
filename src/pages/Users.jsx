@@ -38,7 +38,6 @@ export default function User() {
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mt-2 ">
                     <Users />
                 </div>
-                <h1 className="text-3xl font-semibold mb-4">USER MANGMENT</h1>
                 <div className="grid grid-cols-1 ">
                     <div>
                         <h2 className="text-2xl font-semibold mb-4">Users </h2>

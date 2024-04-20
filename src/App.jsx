@@ -10,6 +10,7 @@ import ProductDetails from './pages/ProductDetails';
 import CartPage from './pages/CartPage';
 import User from './pages/Users';
 import UserProfile from './pages/UserProfile';
+import ReceiptPage from './pages/ReceiptPage';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path='/users' element={<User />} />
         <Route path='/users/:userId' element={<UserProfile />} />
+        <Route path='/receipt' element={<ReceiptPage />} />
 
 
       </Routes>

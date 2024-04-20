@@ -19,7 +19,6 @@ const UserOrderList = ({ userId }) => {
                         const productsWithDetails = await Promise.all(
                             order.products.map(async (productId) => {
                                 const productResponse = await axios.get(`http://localhost:3000/products/${productId}`);
-                                console.log(productResponse.data)
                                 return productResponse.data;
                             })
                         );
