@@ -13,8 +13,6 @@ const UserOrderList = ({ userId }) => {
             try {
                 const response = await axios.get(`http://localhost:3000/orders/${userId}`);
                 const orderData = response.data;
-                console.log(orderData); // Log the fetched order data
-
                 const orders = Array.isArray(orderData) ? orderData : [orderData];
                 // Set the orders in your component state or Redux store
 
@@ -29,8 +27,6 @@ const UserOrderList = ({ userId }) => {
                     })),
                     orderDate: new Date(order.orderDate).toLocaleDateString(),
                 }));
-                console.log(productsMap)
-
                 setProductsMap(productsMap);
             } catch (error) {
                 console.error('Error fetching orders:', error);

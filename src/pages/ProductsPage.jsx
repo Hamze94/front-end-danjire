@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { addItem } from "../redux/features/cartSlice"; // Import the addItem action
 import { useIsAdmin } from "../auth";
 
-const Products = () => {
+const ProductsPage = () => {
     const isAdmin = useIsAdmin(); // Call the custom hook
     const dispatch = useDispatch();
     const [selectedProduct, setSelectedProduct] = useState(null); // Stores selected product for update
@@ -99,7 +99,6 @@ const Products = () => {
                             </div>
                         )}
                         {/* Product Cards */}
-                        <h2 className="text-3xl font-bold mb-6">Featured Products</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-5">
                             {products &&
                                 products.map((product) => (
@@ -158,4 +157,4 @@ const Products = () => {
     );
 };
 
-export default Products;
+export default ProductsPage;

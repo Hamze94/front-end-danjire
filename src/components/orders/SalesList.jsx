@@ -24,8 +24,8 @@ const SalesList = () => {
     }
 
     return (
-        <div className='bg-gray-100' >
-            <h2>Sales List</h2>
+        <div className="col-span-3 bg-white p-4 rounded-lg shadow-md my-2">
+            <h2 className="text-xl font-bold mb-4">Orders</h2>
             <SalesTable sales={sales} />
         </div>
     );

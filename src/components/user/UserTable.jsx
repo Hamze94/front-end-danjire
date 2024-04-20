@@ -21,31 +21,29 @@ const UserTable = ({ users }) => {
     };
 
     return (
-        <div className="container mx-auto text-center bg-white rounded-md shadow-md overflow-x-auto">
-            <table className="min-w-max w-full table-auto">
-                {/* Table headers */}
-                <thead className="border-b border-neutral-200">
-                    {/* Header row */}
-                    <tr>
-                        <th scope="col" className="px-1 py-1">
+        <div className="container mx-auto my-2">
+            <table className="min-w-full">
+                <thead>
+                    <tr className="bg-gray-50">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Name
                         </th>
-                        <th scope="col" className="px-1 py-1">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Email
                         </th>
-                        <th scope="col" className="px-1 py-1">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Role
                         </th>
-                        <th scope="col" className="px-1 py-1">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Description
                         </th>
-                        <th scope="col" className="px-1 py-1">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Address
                         </th>
-                        <th scope="col" className="px-1 py-1">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Phone Number
                         </th>
-                        <th scope="col" className="px-1 py-1">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Action
                         </th>
                     </tr>
@@ -53,29 +51,27 @@ const UserTable = ({ users }) => {
                 {/* Table body */}
                 <tbody>
                     {currentUsers.map((user, index) => (
-                        <tr
-                            key={user._id}
-                            className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
-                        >
-                            <Link
-                                to={`/users/${user._id}`}
-                                className="text-blue-500 hover:underline"
-                            >
-                                {user.name}
-                            </Link>{" "}
-                            <td className="whitespace-nowrap px-6 py-4">{user.email}</td>
-                            <td className="whitespace-nowrap px-6 py-4">{user.role}</td>
-                            <td className="whitespace-nowrap px-6 py-4">
+                        <tr key={user._id} className="border-b  border-gray-200">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <Link
+                                    to={`/users/${user._id}`}
+                                    className="text-blue-500 hover:underline"
+                                >
+                                    {user.name}
+                                </Link>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{user.role}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
                                 {user.description || "N/A"}
                             </td>
-                            <td className="whitespace-nowrap px-6 py-4">
+                            <td className="px-6 py-4 whitespace-nowrap">
                                 {user.address || "N/A"}
                             </td>
-                            <td className="whitespace-nowrap px-6 py-4">
+                            <td className="px-6 py-4 whitespace-nowrap">
                                 {user.phoneNumber}
                             </td>
-                            <td>
-                                {" "}
+                            <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex space-x-2">
                                     <MdDeleteOutline className="text-pink text-2xl hover:text-blue-600 cursor-pointer" />
                                     <GrUpdate className="text-accent text-2xl hover:text-blue-600 cursor-pointer" />
@@ -86,8 +82,6 @@ const UserTable = ({ users }) => {
                 </tbody>
             </table>
             {/* Pagination */}
-            <hr className="my-4 border-gray-300" />
-
             {totalPages > 1 && (
                 <div className="mt-4 flex justify-center items-center space-x-2">
                     {Array.from({ length: totalPages }, (_, i) => (
@@ -104,7 +98,6 @@ const UserTable = ({ users }) => {
                     ))}
                 </div>
             )}
-            <hr className="my-4 border-gray-300" />
         </div>
     );
 };

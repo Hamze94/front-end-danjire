@@ -70,7 +70,6 @@ export const fetchUserCard = createAsyncThunk(
     'cards/fetchUserCard',
     async (userId, { getState }) => {
         const token = getState().auth;
-        console.log(token)// Get authentication token from the state
         const response = await axios.get(`http://localhost:3000/cards/${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,

@@ -26,12 +26,8 @@ const AdminDashboard = () => {
                     <Credits />
                     <Sales />
                 </div>
-                <h1 className="text-3xl font-semibold mb-4">Admin Dashboard</h1>
                 <div className="grid grid-cols-1 ">
-                    <div>
-                        <h2 className="text-2xl font-semibold mb-4">Sales</h2>
-                        <SalesList />
-                    </div>
+                    <SalesList />
                 </div>
                 <div className="grid grid-cols-1  mt-8">
                     <div>

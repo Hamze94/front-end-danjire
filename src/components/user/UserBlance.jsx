@@ -1,45 +1,63 @@
+// UserBlance.js
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserCard } from '../../redux/features/usersSlice';
+import { fetchCardByUserId } from '../../redux/features/cardSlice';
+import TransitionModelPopup from '../transtions/TransitionModelPopup';
 
 export default function UserBlance({ user }) {
     const [storedUser, setStoredUser] = useState(null);
+    const [balance, setBalance] = useState(null);
     const dispatch = useDispatch();
+    const [showTransactionModel, setShowTransactionModel] = useState(false);
+    const handleOpenTransactionModel = () => {
+        setShowTransactionModel(true);
+    };
 
-    const { card, error, loading } = useSelector(state => state.users)
+    const handleCloseTransactionModel = () => {
+        setShowTransactionModel(false);
+    };
+
     useEffect(() => {
         const storedUserData = localStorage.getItem('currentUser');
         if (storedUserData) {
             const parsedStoredUser = JSON.parse(storedUserData);
             setStoredUser(parsedStoredUser);
-            dispatch(fetchUserCard(parsedStoredUser._id)); // Dispatch action with stored user's ID
+            dispatch(fetchCardByUserId(parsedStoredUser._id));
         }
     }, [dispatch]);
 
-    // If user data is not available, render null
+    const { card, loading, error } = useSelector((state) => state.cards);
+
+    useEffect(() => {
+        if (card) {
+            setBalance(card.balance);
+        }
+    }, [card]);
+
     if (!user && !storedUser) {
         return null;
     }
 
-    // Use stored user data if user prop is not available
     const currentUser = user || storedUser;
 
     return (
         <div className="bg-white p-4 rounded-lg shadow-md">
             <div className="mb-4">
                 <div className="container">
-                    <h1 className="text-xl font-semibold">Balance: $120</h1>
-                    <p className="mb-2"><span className="font-semibold">Name:</span> {currentUser.name}</p>
-                    <p className="mb-2"><span className="font-semibold">Email:</span> {currentUser.email}</p>
-                    <p className="mb-2"><span className="font-semibold">Role:</span> {currentUser.role}</p>
+                    <h1 className="text-xl  text-center rounded-md p-2 bg-emerald-500  font-semibold">${balance}</h1>
+                    <p className="mb-2 rounded-md uppercase  text-black p-2"> {currentUser.name}</p>
+                    <p className="mb-2 rounded-md  p-2"> {currentUser.email}</p>
+                    <p className="mb-2  p-2 rounded-md"> {currentUser.role}</p>
                     <button className="bg-blue-500 w-full text-white py-2 px-4 rounded mt-2">
                         Update Profile
                     </button>
-                    <button className="bg-pink w-full text-white py-2 px-4 rounded mt-2">
-                        Add Transtions
+                    <button onClick={handleOpenTransactionModel} className="bg-pink w-full text-white py-2 px-4 rounded mt-2">
+                        Add Transactions
                     </button>
                 </div>
             </div>
+            {showTransactionModel && <TransitionModelPopup onClose={handleCloseTransactionModel} />}
         </div>
     );
 }

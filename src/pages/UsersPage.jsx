@@ -5,9 +5,10 @@ import { useIsAdmin } from "../auth";
 import { FaPlus } from "react-icons/fa";
 import AddUserModel from "../components/user/AddUserModel";
 import UserList from "../components/user/UsersList";
-import Users from "../components/user/Users";
+import Users from "../components/user/UsersCount";
+import UsersCount from "../components/user/UsersCount";
 
-export default function User() {
+export default function UsersPage() {
     const [showModal, setShowModal] = useState(false);
     const handleToggleModal = () => {
         console.log(showModal)
@@ -35,14 +36,11 @@ export default function User() {
                     Add Customer
                 </button>
                 {showModal && <AddUserModel onClose={handleToggleModal} />}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mt-2 ">
-                    <Users />
+                <div className="grid grid-cols-1  gap-6 sm:grid-cols-2 lg:grid-cols-4 mt-2 ">
+                    <UsersCount />
                 </div>
-                <div className="grid grid-cols-1 ">
-                    <div>
-                        <h2 className="text-2xl font-semibold mb-4">Users </h2>
-                        <UserList />
-                    </div>
+                <div className="grid grid-cols-1 my-2 ">
+                    <UserList />
                 </div>
                 <div className="grid grid-cols-1  mt-8">
                     <div>

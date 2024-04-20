@@ -16,27 +16,27 @@ const SalesTable = ({ sales }) => {
     });
 
     return (
-        <div className='container mx-auto text-center bg-white rounded-md shadow-md overflow-x-auto'>
-            <table className="min-w-max w-full table-auto">
-                <thead className='border-b border-neutral-200'>
-                    <tr>
-                        <th scope="col" className="px-1 py-1">User</th>
-                        <th scope="col" className="px-1 py-1">Products</th>
-                        <th scope="col" className="px-1 py-1">Order Date</th>
+        <div className="container mx-auto my-2">
+            <table className="min-w-full">
+                <thead>
+                    <tr className="bg-gray-50">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Products</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     {processedSales.map(sale => (
                         <tr key={sale._id}>
-                            <td className='whitespace-nowrap px-6 py-4'>{sale.user.length > 0 ? sale.user.join(', ') : 'N/A'}</td>
-                            <td className='whitespace-nowrap px-6 py-4 '>
+                            <td className="px-6 py-4 whitespace-nowrap">{sale.user.length > 0 ? sale.user.join(', ') : 'N/A'}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
                                 {Object.entries(sale.productCounts).map(([productName, count]) => (
                                     <div key={productName}>
                                         {count > 1 ? `${count} ${productName}` : productName}
                                     </div>
                                 ))}
                             </td>
-                            <td className='whitespace-nowrap px-6 py-4'>{formatDate(sale.orderDate)}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{formatDate(sale.orderDate)}</td>
                         </tr>
                     ))}
                 </tbody>

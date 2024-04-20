@@ -5,7 +5,7 @@ import DashboardCard from '../DashboardCards';
 import { GiTakeMyMoney } from "react-icons/gi";
 import Loading from '../Loading';
 
-export default function Users() {
+export default function UsersCount() {
     const dispatch = useDispatch();
     const { users, loading, error } = useSelector(state => state.users);
     useEffect(() => {
