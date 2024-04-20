@@ -13,26 +13,34 @@ const UserOrderList = ({ userId }) => {
             try {
                 const response = await axios.get(`http://localhost:3000/orders/${userId}`);
                 const orderData = response.data;
+                console.log(orderData); // Log the fetched order data
+
                 const orders = Array.isArray(orderData) ? orderData : [orderData];
-                const updatedOrders = await Promise.all(
-                    orders.map(async (order) => {
-                        const productsWithDetails = await Promise.all(
-                            order.products.map(async (productId) => {
-                                const productResponse = await axios.get(`http://localhost:3000/products/${productId}`);
-                                return productResponse.data;
-                            })
-                        );
-                        order.products = productsWithDetails;
-                        return order;
-                    })
-                );
-                setProductsMap(updatedOrders);
+                // Set the orders in your component state or Redux store
+
+                // Map over each order and extract product information
+                const productsMap = orders.map(order => ({
+                    orderId: order._id,
+                    products: order.products.map(product => ({
+                        productId: product._id,
+                        name: product.name,
+                        imageUrl: product.imageUrl,
+                        // Add other product properties as needed
+                    })),
+                    orderDate: new Date(order.orderDate).toLocaleDateString(),
+                }));
+                console.log(productsMap)
+
+                setProductsMap(productsMap);
             } catch (error) {
                 console.error('Error fetching orders:', error);
             }
         };
+
         fetchOrders();
     }, [userId]);
+
+
 
     if (loading) {
         return <p>Loading...</p>;
@@ -54,7 +62,7 @@ const UserOrderList = ({ userId }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {userOrders.map((order, index) => (
+                        {productsMap.map((order, index) => (
                             <tr key={index}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     <div className="flex items-center">
@@ -68,7 +76,7 @@ const UserOrderList = ({ userId }) => {
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {new Date(order.orderDate).toLocaleDateString()}
+                                    {order.orderDate}
                                 </td>
                             </tr>
                         ))}
