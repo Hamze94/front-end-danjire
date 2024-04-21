@@ -1,15 +1,15 @@
-// UserBlance.js
-
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCardByUserId } from '../../redux/features/cardSlice';
 import TransitionModelPopup from '../transtions/TransitionModelPopup';
 
-export default function UserBlance({ user }) {
+export default function UserBalance({ user, onUpdate }) { // Accept onUpdate callback function as prop
     const [storedUser, setStoredUser] = useState(null);
     const [balance, setBalance] = useState(null);
-    const dispatch = useDispatch();
     const [showTransactionModel, setShowTransactionModel] = useState(false);
+    const token = useSelector(state => state.auth.token);
+    const dispatch = useDispatch();
+
     const handleOpenTransactionModel = () => {
         setShowTransactionModel(true);
     };
@@ -23,17 +23,17 @@ export default function UserBlance({ user }) {
         if (storedUserData) {
             const parsedStoredUser = JSON.parse(storedUserData);
             setStoredUser(parsedStoredUser);
-            dispatch(fetchCardByUserId(parsedStoredUser._id));
+            dispatch(fetchCardByUserId(parsedStoredUser._id, token));
         }
-    }, [dispatch]);
+    }, [dispatch, token]);
 
-    const { card, loading, error } = useSelector((state) => state.cards);
+    const { userCard } = useSelector((state) => state.cards);
 
     useEffect(() => {
-        if (card) {
-            setBalance(card.balance);
+        if (userCard) {
+            setBalance(userCard.balance);
         }
-    }, [card]);
+    }, [userCard]);
 
     if (!user && !storedUser) {
         return null;
@@ -57,7 +57,7 @@ export default function UserBlance({ user }) {
                     </button>
                 </div>
             </div>
-            {showTransactionModel && <TransitionModelPopup onClose={handleCloseTransactionModel} />}
+            {showTransactionModel && <TransitionModelPopup onClose={handleCloseTransactionModel} cardId={userCard._id} onUpdate={onUpdate} />}
         </div>
     );
 }

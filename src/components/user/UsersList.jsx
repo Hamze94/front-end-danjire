@@ -23,7 +23,7 @@ const UserList = () => {
     }
 
     return (
-        <div className="col-span-3 bg-white p-4 rounded-lg shadow-md">
+        <div className="col-span-3 container bg-white p-4 rounded-lg shadow-md">
             <h2 className="text-xl font-bold mb-4">Users</h2>
 
             <UserTable users={users} />

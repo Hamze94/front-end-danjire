@@ -1,16 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, updateProduct } from '../../redux/features/productsSlice';
 import { FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+
 export default function AddProductModel({ onClose, updateProductData }) {
-    let navigate = useNavigate();
-    const [showModal, setShowModal] = useState(true);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm();
+    const { categories } = useSelector(state => state.categories);
+    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm();
+    const [showModal, setShowModal] = useState(true);
+
+    useEffect(() => {
+        // If updating a product, pre-fill the form with product data
+        if (updateProductData) {
+            setValue('name', updateProductData.name);
+            setValue('categoryId', updateProductData.categoryId); // Set the selected category value
+            setValue('description', updateProductData.description);
+            setValue('sellingPrice', updateProductData.sellingPrice);
+            setValue('costPrice', updateProductData.costPrice);
+            setValue('quantity', updateProductData.quantity);
+
+            setValue('image', updateProductData.image);
+            setValue('expireyDate', new Date(updateProductData.expireyDate));
+        }
+    }, [updateProductData, setValue]);
 
     const onSubmit = (data) => {
         if (updateProductData) {
@@ -22,32 +39,12 @@ export default function AddProductModel({ onClose, updateProductData }) {
         navigate('/shop');
     };
 
-    useEffect(() => {
-        if (updateProductData) {
-            setValue('name', updateProductData.name);
-            setValue('category', updateProductData.category);
-            setValue('description', updateProductData.description);
-            setValue('sellingPrice', updateProductData.sellingPrice);
-            setValue('costPrice', updateProductData.costPrice);
-            setValue('image', updateProductData.image); // Update image handling might be needed
-            setValue('expireyDate', new Date(updateProductData.expireyDate)); // Convert expireyDate to a Date object
-            // Check if an image is available
-            if (updateProductData.image) {
-                // Create a new File object with the image URL
-                const imageFile = new File([null], updateProductData.image, { type: 'image/*' });
-                setValue('image', imageFile);
-            } else {
-                // Handle case where image is null or undefined
-                setValue('image', null); // Set image to null or some default value
-            }
-        }
-
-
-    }, [updateProductData, setValue]);
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
     const expireyDate = watch("expireyDate");
+
     return (
         showModal && (
             <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
@@ -60,46 +57,49 @@ export default function AddProductModel({ onClose, updateProductData }) {
                     </div>
                     <div className="max-h-96 overflow-y-auto">
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="mb-4">
-                                <label htmlFor="name" className="block mb-2">Product Name</label>
-                                <input type="text" id="name" {...register("name", { required: "Product Name is required" })} className="border border-gray-300 px-4 py-2 w-full rounded" />
+                            <div className="mb-4" >
+                                <label className="block mb-2">Product Name</label>
+                                <input type="text" {...register("name", { required: "Product Name is required" })} className="border border-gray-300 px-4 py-2 w-full rounded" />
                                 {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="category" className="block mb-2">Category</label>
-                                <input type="text" id="category" {...register("category", { required: "Category is required" })} className="border border-gray-300 px-4 py-2 w-full rounded" />
+                                <label className="block mb-2">Category</label>
+                                <select {...register("categoryId", { required: "Category is required" })} className="border border-gray-300 px-4 py-2 w-full rounded">
+                                    <option value="">Select Category</option>
+                                    {categories.map(category => (
+                                        <option key={category._id} value={category._id}>{category.name}</option>
+                                    ))}
+                                </select>
                                 {errors.category && <span className="text-red-500">{errors.category.message}</span>}
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="description" className="block mb-2">Description</label>
-                                <input type="text" id="description" {...register("description", { required: "sellingPrice is required", min: { value: 0, message: "sellingPrice must be greater than or equal to 0" } })} className="border border-gray-300 px-4 py-2 w-full rounded" />
+                                <label className="block mb-2">Description</label>
+                                <input type="text" {...register("description", { required: "Description is required" })} className="border border-gray-300 px-4 py-2 w-full rounded" />
                                 {errors.description && <span className="text-red-500">{errors.description.message}</span>}
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="sellingPrice" className="block mb-2">Selling Price</label>
-                                <input type="number" id="sellingPrice" {...register("sellingPrice", { required: "sellingPrice is required", min: { value: 0, message: "sellingPrice must be greater than or equal to 0" } })} className="border border-gray-300 px-4 py-2 w-full rounded" />
+                                <label className="block mb-2">Selling Price</label>
+                                <input type="number" {...register("sellingPrice", { required: "Selling Price is required", min: { value: 0, message: "Selling Price must be greater than or equal to 0" } })} className="border border-gray-300 px-4 py-2 w-full rounded" />
                                 {errors.sellingPrice && <span className="text-red-500">{errors.sellingPrice.message}</span>}
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="costPrice" className="block mb-2">Cost Price</label>
-                                <input type="number" id="costPrice" {...register("costPrice", { required: "costPrice is required", min: { value: 0, message: "costPrice must be greater than or equal to 0" } })} className="border border-gray-300 px-4 py-2 w-full rounded" />
+                                <label className="block mb-2">Cost Price</label>
+                                <input type="number" {...register("costPrice", { required: "Cost Price is required", min: { value: 0, message: "Cost Price must be greater than or equal to 0" } })} className="border border-gray-300 px-4 py-2 w-full rounded" />
                                 {errors.costPrice && <span className="text-red-500">{errors.costPrice.message}</span>}
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="image" className="block mb-2">Image Upload</label>
-                                <input
-                                    type="file"
-                                    id="image"
-                                    {...register("image", { required: "Image is required" })}
-                                    className="border border-gray-300 px-4 py-2 w-full rounded"
-                                />
+                                <label className="block mb-2">Quantiy</label>
+                                <input type="number" {...register("quantity", { required: "quantity is required", min: { value: 0, message: "quantity no: must be greater than or equal to 0" } })} className="border border-gray-300 px-4 py-2 w-full rounded" />
+                                {errors.quantity && <span className="text-red-500">{errors.quantity.message}</span>}
+                            </div>
+                            <div className="mb-4">
+                                <label className="block mb-2">Image Upload</label>
+                                <input type="file" {...register("image", { required: "Image is required" })} className="border border-gray-300 px-4 py-2 w-full rounded" />
                                 {errors.image && <span className="text-red-500">{errors.image.message}</span>}
                             </div>
-
                             <div className="mb-4">
-                                <label htmlFor="expireyDate" className="block mb-2">Expiry Date</label>
+                                <label className="block mb-2">Expiry Date</label>
                                 <DatePicker
-                                    id="expireyDate"
                                     selected={expireyDate}
                                     onChange={(date) => setValue("expireyDate", date)}
                                     dateFormat="MM/dd/yyyy"
@@ -107,7 +107,7 @@ export default function AddProductModel({ onClose, updateProductData }) {
                                 />
                                 {errors.expireyDate && <span className="text-red-500">{errors.expireyDate.message}</span>}
                             </div>
-                            <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ">Submit</button>
+                            <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4">Submit</button>
                         </form>
                     </div>
                 </div>

@@ -23,8 +23,15 @@ export const fetchUser = createAsyncThunk(
 export const addUser = createAsyncThunk(
     'users/addUser',
     async (userData) => {
-        const response = await axios.post('http://localhost:3000/auth/singup', userData);
-        return response.data;
+        try {
+            const response = await axios.post('http://localhost:3000/auth/singup', userData);
+            console.log(response)
+            return response.data;
+        } catch (error) {
+            console.log(error.message)
+        }
+
+
     }
 );
 export const fetchUserOrdersWithProducts = createAsyncThunk(

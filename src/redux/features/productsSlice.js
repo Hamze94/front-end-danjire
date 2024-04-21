@@ -14,7 +14,7 @@ export const addProduct = createAsyncThunk(
         try {
             const formData = new FormData();
             formData.append('name', productData.name);
-            formData.append('category', productData.category);
+            formData.append('categoryId', productData.categoryId);
             formData.append('sellingPrice', productData.sellingPrice);
             formData.append('costPrice', productData.costPrice);
             formData.append('expireyDate', productData.expireyDate);
@@ -42,9 +42,10 @@ export const updateProduct = createAsyncThunk(
             console.log(productId, updatedProduct)
             const formData = new FormData();
             formData.append('name', updatedProduct.name);
-            formData.append('category', updatedProduct.category);
+            formData.append('categoryId', updatedProduct.categoryId);
             formData.append('sellingPrice', updatedProduct.sellingPrice);
             formData.append('costPrice', updatedProduct.costPrice);
+            formData.append('quantity', updatedProduct.quantity);
             formData.append('expireyDate', updatedProduct.expireyDate);
             formData.append('description', updatedProduct.description);
             formData.append('image', updatedProduct.image[0]); // Assuming updatedProduct.image is an array containing the uploaded file
@@ -93,7 +94,17 @@ export const fetchProductById = createAsyncThunk(
         }
     }
 );
-
+export const filterProductsByCategory = createAsyncThunk(
+    'products/filterByCategory',
+    async (categoryId, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`http://localhost:3000/products/category/${categoryId}`);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 const productsSlice = createSlice({
     name: 'products',
@@ -163,19 +174,28 @@ const productsSlice = createSlice({
             .addCase(fetchProductById.pending, (state) => {
                 state.loading = true;
             })
-            // Handle success state after fetching product details
             .addCase(fetchProductById.fulfilled, (state, action) => {
                 state.loading = false;
-                // Add the fetched product to the state
                 state.products.push(action.payload);
             })
-            // Handle error state if fetching product details fails
             .addCase(fetchProductById.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload; // Set the error message
+            })
+            .addCase(filterProductsByCategory.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(filterProductsByCategory.fulfilled, (state, action) => {
+                state.loading = false;
+                state.products = action.payload;
+            })
+            .addCase(filterProductsByCategory.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     }
 });
 
-export const productsActions = { fetchProducts, fetchProductById, addProduct, deleteProduct, updateProduct, setSearchQuery }
+export const productsActions = { fetchProducts, fetchProductById, addProduct, deleteProduct, updateProduct, setSearchQuery, filterProductsByCategory }
 export default productsSlice.reducer;

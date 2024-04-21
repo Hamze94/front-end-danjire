@@ -7,13 +7,14 @@ import { MdDeleteOutline } from "react-icons/md";
 import { GrUpdate } from "react-icons/gr";
 import AddCategoryModel from "./AddCategoryModel";
 import { useIsAdmin } from "../../auth";
-export default function Categoreis() {
+
+export default function Categories({ handleFilterByCategory }) {
     const isAdmin = useIsAdmin();
     const dispatch = useDispatch();
     const [selectedCategory, setSelectedCategory] = useState(null); // Stores selected Category for update
     const [showModal, setShowModal] = useState(false);
     const { categories, loading, error } = useSelector(
-        (state) => state.categoreis
+        (state) => state.categories
     );
     useEffect(() => {
         dispatch(fetchCategories());
@@ -44,7 +45,7 @@ export default function Categoreis() {
             setSelectedCategory(category);
             setShowModal(true);
         } else {
-            console.warn("You are not authorized to update categorys");
+            console.warn("You are not authorized to update categories");
         }
     };
     if (loading) {
@@ -74,7 +75,8 @@ export default function Categoreis() {
                         {categories.map((category) => (
                             <li key={category._id} className="border-b border-gray-300">
                                 <div className="flex justify-between px-2 items-center">
-                                    <a href="#" className="block py-2 px-4 hover:bg-gray-200">
+                                    {/* Call handleFilterByCategory when a category is clicked */}
+                                    <a href="#" className="block py-2 px-4 hover:bg-gray-200" onClick={() => handleFilterByCategory(category._id)}>
                                         {category.name}
                                     </a>
                                     {isAdmin && (
@@ -84,7 +86,7 @@ export default function Categoreis() {
                                                 onClick={() => confirmDelete(category)}
                                             />
                                             <GrUpdate
-                                                className="text-accent hover:text-blue-600 cursor-pointer"
+                                                className="text-accent text-xl hover:text-blue-600 cursor-pointer"
                                                 onClick={() => handleUpdateClick(category)}
                                             />
                                         </div>

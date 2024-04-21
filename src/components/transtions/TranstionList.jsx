@@ -3,12 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../Loading';
 import { fetchUserTransactions } from '../../redux/features/transactionsSlice';
 
-const TransactionList = ({ userId }) => {
+const TransactionList = ({ userId, onUpdate }) => {
     const dispatch = useDispatch();
     const { userTransactions, error, loading } = useSelector((state) => state.transactions);
 
     useEffect(() => {
-        dispatch(fetchUserTransactions(userId));
+        dispatch(fetchUserTransactions(userId))
+            .then(() => {
+                onUpdate();
+            })
+            .catch((error) => {
+                console.error('Error adding transaction:', error);
+            });
     }, [dispatch, userId]);
 
     if (loading) {
@@ -17,7 +23,7 @@ const TransactionList = ({ userId }) => {
 
     return (
         <div className="container mx-auto my-2">
-            <h2 className="text-2xl font-bold mb-4">Transaction List</h2>
+            <h2 className="text-2xl font-bold mb-4">Transactions</h2>
             <table className="min-w-full ">
                 <thead>
                     <tr className="bg-gray-50">
@@ -28,7 +34,7 @@ const TransactionList = ({ userId }) => {
                 </thead>
                 <tbody>
                     {userTransactions.map((transaction) => (
-                        <tr key={transaction._id} className={`border-b  border-gray-200 ${transaction.type === 'deposit' ? "" : 'bg-red-50'}`}>
+                        <tr key={transaction._id} className={`border-b  border-gray-200 ${transaction.type === 'DEPOSIT' ? "" : 'bg-red-50'}`}>
                             <td className="px-6 py-4 whitespace-nowrap">${transaction.amount}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{new Date(transaction.date).toLocaleDateString()}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{transaction.type}</td>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, deleteProduct } from "../redux/features/productsSlice";
+import { fetchProducts, deleteProduct, filterProductsByCategory } from "../redux/features/productsSlice"; // Import the filterProductsByCategory action
 import Loading from "../components/Loading";
 import { FaPlus, FaList } from "react-icons/fa";
 import Navbar from "../components/Navbar";
@@ -16,6 +16,11 @@ import { addItem } from "../redux/features/cartSlice"; // Import the addItem act
 import { useIsAdmin } from "../auth";
 
 const ProductsPage = () => {
+    // Function to filter products by category
+    const handleFilterByCategory = (categoryId) => {
+        dispatch(filterProductsByCategory(categoryId));
+    };
+
     const isAdmin = useIsAdmin(); // Call the custom hook
     const dispatch = useDispatch();
     const [selectedProduct, setSelectedProduct] = useState(null); // Stores selected product for update
@@ -47,7 +52,6 @@ const ProductsPage = () => {
     };
     const handleDeleteProduct = (productId) => {
         if (isAdmin) {
-            // Check for admin before deleting
             dispatch(deleteProduct(productId));
         } else {
             console.warn("You are not authorized to delete products");
@@ -73,19 +77,20 @@ const ProductsPage = () => {
         }
     };
 
+
     return (
         <>
             <Navbar />
             <div className="bg-gray-100 mt-0 pt-2">
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-5 gap-5">
-                    <Categoreis />
+                    <Categoreis handleFilterByCategory={handleFilterByCategory} />
                     {/* Main Content */}
                     <div className="md:col-span-4 relative">
                         {/* Add Product Button */}
                         {isAdmin && (
                             <div className="flex justify-between items-center mb-6">
                                 <button
-                                    className="flex items-center bg-accent text-white px-4 py-2 rounded-md"
+                                    className="flex items-center bg-pink text-white px-4 py-2 rounded-md "
                                     onClick={handleToggleModal}
                                 >
                                     <FaPlus className="mr-2" />

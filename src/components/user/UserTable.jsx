@@ -21,7 +21,7 @@ const UserTable = ({ users }) => {
     };
 
     return (
-        <div className="container mx-auto my-2">
+        <div>
             <table className="min-w-full">
                 <thead>
                     <tr className="bg-gray-50">
@@ -62,13 +62,16 @@ const UserTable = ({ users }) => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{user.role}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                {user.description || "N/A"}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="truncate overflow-hidden">
+
+                                <td className="px-6 py-4 whitespace-nowrap truncate">
+                                    {user.description || "N/A"}
+                                </td>
+                            </div>
+                            <td className="px-6 py-4 whitespace-nowrap truncate">
                                 {user.address || "N/A"}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-6 py-4 whitespace-nowrap truncate">
                                 {user.phoneNumber}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">

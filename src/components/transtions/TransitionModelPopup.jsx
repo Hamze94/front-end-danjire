@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
 import { addTransaction } from '../../redux/features/transactionsSlice';
 
-export default function TransitionModelPopup({ onClose, cardData, orderData }) {
-    let navigate = useNavigate();
+export default function TransitionModelPopup({ onClose, cardId, onUpdate }) {
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [showModal, setShowModal] = useState(true);
 
     const onSubmit = (data) => {
-        dispatch(addTransaction(data));
+        const transactionData = { ...data, cardId };
+        dispatch(addTransaction(transactionData))
+            .then(() => {
+                onUpdate();
+            });
         handleCloseModal();
     };
 
     const handleCloseModal = () => {
         setShowModal(false);
+        onClose();
     };
 
     return (
@@ -32,12 +35,12 @@ export default function TransitionModelPopup({ onClose, cardData, orderData }) {
                 <div className="max-h-96 overflow-y-auto">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-4">
-                            <label htmlFor="amount" className="block mb-2">Amount</label>
+                            <label className="block mb-2">Amount</label>
                             <input type="number" id="amount" {...register("amount", { required: "Amount is required" })} className="border border-gray-300 px-4 py-2 w-full rounded" />
                             {errors.amount && <span className="text-red-500">{errors.amount.message}</span>}
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="type" className="block mb-2">Transaction Type</label>
+                            <label className="block mb-2">Transaction Type</label>
                             <select id="type" {...register("type")} className="border border-gray-300 px-4 py-2 w-full rounded">
                                 <option value="DEPOSIT">DEPOSIT</option>
                                 <option value="CREDIT">CREDIT</option>

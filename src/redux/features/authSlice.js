@@ -4,7 +4,7 @@ import axios from 'axios';
 // Define the initial state
 const initialState = {
     user: null,
-    token: null,
+    token: localStorage.getItem('accessToken') || null, // Retrieve token from localStorage
     loading: false,
     error: null,
     isAuthenticated: false, // Add isAuthenticated field
@@ -33,6 +33,7 @@ const authSlice = createSlice({
             state.user = null;
             state.token = null;
             state.isAuthenticated = false;
+            localStorage.removeItem('accessToken'); // Remove token from localStorage on logout
         },
     },
     extraReducers: (builder) => {
@@ -46,6 +47,7 @@ const authSlice = createSlice({
                 state.user = action.payload.user;
                 state.token = action.payload.access_token;
                 state.isAuthenticated = true;
+                localStorage.setItem('accessToken', action.payload.access_token); // Store token in localStorage on successful login
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;

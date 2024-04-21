@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const initialState = {
     cards: [],
+    userCard: null,
     loading: false,
     error: null,
 };
@@ -11,23 +12,23 @@ export const fetchCardByUserId = createAsyncThunk(
     'cards/fetchCardByUserId',
     async (userId, thunkAPI) => {
         const { getState } = thunkAPI;
-        const { auth } = getState();
-        const { token } = auth;
-        console.log(auth)
-
+        const state = getState();
+        const token = state.auth.token;
         try {
             const response = await axios.get(`http://localhost:3000/cards/${userId}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                    Authorization: `Bearer ${token}`,
+                },
             });
-            console.log(response)
             return response.data;
         } catch (error) {
+            // Handle specific error types here (e.g., network errors, etc.)
+            console.error('Error fetching cards:', error);
             throw error;
         }
     }
 );
+
 
 export const createCard = createAsyncThunk(
     'cards/createCard',
@@ -53,7 +54,7 @@ const cardSlice = createSlice({
             })
             .addCase(fetchCardByUserId.fulfilled, (state, action) => {
                 state.loading = false;
-                state.cards = action.payload;
+                state.userCard = action.payload;
             })
             .addCase(fetchCardByUserId.rejected, (state, action) => {
                 state.loading = false;

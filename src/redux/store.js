@@ -7,15 +7,17 @@ import categoriesReducer from "./features/categoriesSlice";
 import itemesReducer from './features/cartSlice'
 import usersReducer from './features/usersSlice'
 import cardReducer from './features/cardSlice'
+import darkModeSlice from './features/darkModeSlice/'
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         sales: salesReducer,
         transactions: transnctionReducer,
         products: productsReducer,
-        categoreis: categoriesReducer,
+        categories: categoriesReducer,
         items: itemesReducer,
         users: usersReducer,
         cards: cardReducer,
+        darkMode: darkModeSlice
     }
 });
