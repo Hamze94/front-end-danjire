@@ -53,8 +53,18 @@ const ProductsPage = () => {
     const handleDeleteProduct = (productId) => {
         if (isAdmin) {
             dispatch(deleteProduct(productId));
+            setSelectedProduct(null); // Clear selected product after deletion
         } else {
             console.warn("You are not authorized to delete products");
+        }
+    };
+
+    const handleUpdateClick = (product) => {
+        if (isAdmin) {
+            setSelectedProduct(product);
+            setShowModal(true);
+        } else {
+            console.warn("You are not authorized to update products");
         }
     };
     const confirmDelete = (product) => {
@@ -63,21 +73,10 @@ const ProductsPage = () => {
         );
         console.log(result);
         if (result) {
+            setShowModal(false); // Close the modal before deleting the product
             handleDeleteProduct(product._id);
         }
     };
-    const handleUpdateClick = (product) => {
-        if (isAdmin) {
-            // Check for admin before updating
-            setSelectedProduct(product);
-            console.log("edit" + showModal)
-            setShowModal(!showModal);
-        } else {
-            console.warn("You are not authorized to update products");
-        }
-    };
-
-
     return (
         <>
             <Navbar />
@@ -140,6 +139,8 @@ const ProductsPage = () => {
                                                             className="text-accent hover:text-blue-600 cursor-pointer"
                                                             onClick={() => handleUpdateClick(product)}
                                                         />
+                                                        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{product.quantity}</span>
+
                                                     </>
                                                 )}
                                             </div>

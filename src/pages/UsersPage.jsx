@@ -6,7 +6,6 @@ import { FaPlus } from "react-icons/fa";
 import AddUserModel from "../components/user/AddUserModel";
 import UserList from "../components/user/UsersList";
 import UsersCount from "../components/user/UsersCount";
-import { toggleDarkMode, setDarkMode } from '../redux/features/darkModeSlice'; // Import actions from your slice
 import { useDispatch, useSelector } from "react-redux";
 
 export default function UsersPage() {
@@ -35,7 +34,7 @@ export default function UsersPage() {
         <div>
             <Navbar />
             <div className="container mx-auto mb-2  mt-2">
-                <button className={`flex items-center${darkMode ? 'bg-red-500' : 'bg-pink'} text-white px-4 py-2 rounded-md mb-4`} onClick={handleToggleModal}>
+                <button className={`flex items-center  bg-pink text-white px-4 py-2 rounded-md mb-4`} onClick={handleToggleModal}>
                     <FaPlus className="mr-2" />
                     Add Customer
                 </button>

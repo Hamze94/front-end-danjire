@@ -68,7 +68,7 @@ export default function UserProfile() {
         <div>
             <Navbar />
             <div className="container mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 m-2">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-2">
                     <UserBlance user={user} onUpdate={handleUpdate} />
                     <div className="col-span-3 bg-white p-4 rounded-lg shadow-md">
                         <h2 className="text-xl font-bold mb-4">Orders</h2>

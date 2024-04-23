@@ -23,7 +23,6 @@ export default function AddProductModel({ onClose, updateProductData }) {
             setValue('sellingPrice', updateProductData.sellingPrice);
             setValue('costPrice', updateProductData.costPrice);
             setValue('quantity', updateProductData.quantity);
-
             setValue('image', updateProductData.image);
             setValue('expireyDate', new Date(updateProductData.expireyDate));
         }

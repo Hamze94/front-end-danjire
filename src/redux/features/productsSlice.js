@@ -18,6 +18,7 @@ export const addProduct = createAsyncThunk(
             formData.append('sellingPrice', productData.sellingPrice);
             formData.append('costPrice', productData.costPrice);
             formData.append('expireyDate', productData.expireyDate);
+            formData.append('quantity', productData.quantity);
             formData.append('description', productData.description);
             formData.append('image', productData.image[0]); // Assuming productData.image is an array containing the uploaded file
             const response = await axios.post('http://localhost:3000/products/create', formData);

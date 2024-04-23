@@ -4,6 +4,7 @@ import {
     incrementItem,
     decrementItem,
     removeItem,
+    clearCart,
 } from "../redux/features/cartSlice";
 import { fetchCardByUserId } from "../redux/features/cardSlice";
 import { MdDeleteOutline } from "react-icons/md";
@@ -47,7 +48,6 @@ const CartPage = () => {
     const { userCard } = useSelector((state) => state.cards);
     const handleCheckout = () => {
         const cardId = userCard._id
-        console.log(cardId)
         const totalAmount = getTotalPrice();
 
         // Create transaction data
@@ -56,18 +56,24 @@ const CartPage = () => {
             type: "ORDER",
             amount: totalAmount,
         };
+        if (selectedUser) {
+            // Dispatch action to add transaction
+            dispatch(addTransaction(transactionData));
 
-        // Dispatch action to add transaction
-        dispatch(addTransaction(transactionData));
+            // Create order data
+            const order = {
+                userId: selectedUser,
+                user: users.find((user) => user._id === selectedUser),
+                products: selectedProducts,
+            };
+            dispatch(createOrder(order));
 
-        // Create order data
-        const order = {
-            userId: selectedUser,
-            user: users.find((user) => user._id === selectedUser),
-            products: selectedProducts,
-        };
-        dispatch(createOrder(order));
-        navigate("/receipt", { state: { order } });
+            navigate("/receipt", { state: { order } });
+            dispatch(clearCart())
+
+        }
+
+
     };
 
     return (
