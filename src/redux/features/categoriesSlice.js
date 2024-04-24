@@ -12,11 +12,21 @@ export const fetchCategories = createAsyncThunk(
         return response.data
     }
 );
+// Define a function to retrieve the token from the local storage
+const getTokenFromLocalStorage = () => {
+    return localStorage.getItem('accessToken');
+};
+
 export const addCategory = createAsyncThunk(
     'categories/addCategory',
     async (categoryData, { rejectWithValue }) => {
         try {
-            const response = await axios.post('http://localhost:3000/categories/create', categoryData);
+            const token = state.auth.token;
+            const response = await axios.post('http://localhost:3000/categories/create', categoryData, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the request headers
+                },
+            });
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);

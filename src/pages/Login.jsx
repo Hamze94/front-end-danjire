@@ -23,7 +23,6 @@ const Login = () => {
                 localStorage.setItem('accessToken', payload.access_token);
                 // Decode access token to get user information
                 const decodedToken = jwtDecode(payload.access_token);
-                console.log(decodedToken)
                 // Redirect to dashboard or home page
                 navigate('/');
             } else {

@@ -6,7 +6,6 @@ const initialState = {
     products: [],
     loading: true,
     error: null,
-    searchQuery: '',
 };
 export const addProduct = createAsyncThunk(
     'products/addProduct',

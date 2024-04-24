@@ -8,7 +8,7 @@ export const useIsAdmin = () => {
         const accessToken = localStorage.getItem('accessToken');
         if (accessToken) {
             const decodedToken = jwtDecode(accessToken);
-            setIsAdmin(decodedToken.user._doc.role === 'USER');
+            setIsAdmin(decodedToken.user._doc.role === 'ADMIN');
         }
     }, []);
 

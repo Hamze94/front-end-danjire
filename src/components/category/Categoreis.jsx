@@ -7,39 +7,48 @@ import { MdDeleteOutline } from "react-icons/md";
 import { GrUpdate } from "react-icons/gr";
 import AddCategoryModel from "./AddCategoryModel";
 import { useIsAdmin } from "../../auth";
+import ConfirmationModal from "../ConfirmationModal ConfirmationModal ";
 
 export default function Categories({ handleFilterByCategory }) {
     const isAdmin = useIsAdmin();
     const dispatch = useDispatch();
     const [selectedCategory, setSelectedCategory] = useState(null); // Stores selected Category for update
     const [showModal, setShowModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false); // State for confirmation modal
+    const [categoryToDelete, setCategoryToDelete] = useState(null); // State to store category to delete
+    const token = useSelector(state => state.auth.token);
+
     const { categories, loading, error } = useSelector(
         (state) => state.categories
     );
     useEffect(() => {
-        dispatch(fetchCategories());
+        dispatch(fetchCategories(token));
     }, []);
 
     const handleToggleModal = () => {
         setShowModal(!showModal);
     };
-    const confirmDelete = (category) => {
-        const result = window.confirm(
-            "Are you sure you want to delete this category?"
-        );
-        console.log(result);
-        if (result) {
-            handleDeletecategory(category._id);
-        }
-    };
-    const handleDeletecategory = (categoryId) => {
-        if (isAdmin) {
-            // Check for admin before deleting
-            dispatch(deleteCategory(categoryId));
+
+    const handleDeleteCategory = () => {
+        if (categoryToDelete && isAdmin) {
+            console.log(categoryToDelete)
+            // Check if categoryToDelete exists and user is admin
+            dispatch(deleteCategory(categoryToDelete._id));
         } else {
-            console.warn("You are not authorized to delete products");
+            console.warn("You are not authorized to delete categories");
         }
+        setCategoryToDelete(null); // Reset categoryToDelete state
+        setShowConfirmationModal(false); // Close confirmation modal after deletion
+        setShowModal(false)
     };
+
+    const handleConfirmDelete = (category) => {
+        console.log(category)
+        setCategoryToDelete(category); // Set categoryToDelete state
+        console.log(categoryToDelete)
+        setShowConfirmationModal(true); // Open confirmation modal
+    };
+
     const handleUpdateClick = (category) => {
         if (isAdmin) {
             setSelectedCategory(category);
@@ -48,6 +57,7 @@ export default function Categories({ handleFilterByCategory }) {
             console.warn("You are not authorized to update categories");
         }
     };
+
     if (loading) {
         return <Loading />;
     }
@@ -83,7 +93,7 @@ export default function Categories({ handleFilterByCategory }) {
                                         <div className="flex space-x-2">
                                             <MdDeleteOutline
                                                 className="text-pink text-2xl hover:text-blue-600 cursor-pointer"
-                                                onClick={() => confirmDelete(category)}
+                                                onClick={() => handleConfirmDelete(category)} // Use handleConfirmDelete instead of confirmDelete
                                             />
                                             <GrUpdate
                                                 className="text-accent text-xl hover:text-blue-600 cursor-pointer"
@@ -103,6 +113,12 @@ export default function Categories({ handleFilterByCategory }) {
                     updateCategoryData={selectedCategory}
                 />
             )}
+            {/* Render ConfirmationModal */}
+            <ConfirmationModal
+                isOpen={showConfirmationModal}
+                onClose={() => setShowConfirmationModal(false)}
+                onConfirm={handleDeleteCategory}
+            />
         </div>
     );
 }

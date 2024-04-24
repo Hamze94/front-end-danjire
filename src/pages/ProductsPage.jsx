@@ -14,6 +14,7 @@ import ProductDetails from "./ProductDetails";
 import { Link } from "react-router-dom";
 import { addItem } from "../redux/features/cartSlice"; // Import the addItem action
 import { useIsAdmin } from "../auth";
+import ConfirmationModal from "../components/ConfirmationModal ConfirmationModal ";
 
 const ProductsPage = () => {
     // Function to filter products by category
@@ -26,7 +27,8 @@ const ProductsPage = () => {
     const [selectedProduct, setSelectedProduct] = useState(null); // Stores selected product for update
     const { products, loading, error } = useSelector((state) => state.products);
     const [showModal, setShowModal] = useState(false);
-
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [productToDelete, setProductToDelete] = useState(null);
     useEffect(() => {
         dispatch(fetchProducts());
     }, [dispatch]);
@@ -59,6 +61,22 @@ const ProductsPage = () => {
         }
     };
 
+
+    // Handle delete confirmation
+    const confirmDelete = (product) => {
+        setProductToDelete(product);
+        setShowDeleteConfirmation(true);
+    };
+
+    // Handle actual delete action
+    const handleDeleteConfirmed = () => {
+        if (productToDelete) {
+            setShowModal(false); // Close the modal before deleting the product
+            handleDeleteProduct(productToDelete._id);
+            setShowDeleteConfirmation(false);
+        }
+    };
+
     const handleUpdateClick = (product) => {
         if (isAdmin) {
             setSelectedProduct(product);
@@ -67,16 +85,7 @@ const ProductsPage = () => {
             console.warn("You are not authorized to update products");
         }
     };
-    const confirmDelete = (product) => {
-        const result = window.confirm(
-            "Are you sure you want to delete this product?"
-        );
-        console.log(result);
-        if (result) {
-            setShowModal(false); // Close the modal before deleting the product
-            handleDeleteProduct(product._id);
-        }
-    };
+
     return (
         <>
             <Navbar />
@@ -159,6 +168,13 @@ const ProductsPage = () => {
             </div>
             <Footer />
             {selectedProduct && <ProductDetails product={selectedProduct} />}
+            {showDeleteConfirmation && (
+                <ConfirmationModal
+                    isOpen={showDeleteConfirmation}
+                    onClose={() => setShowDeleteConfirmation(false)}
+                    onConfirm={handleDeleteConfirmed}
+                />
+            )}
         </>
     );
 };

@@ -2,8 +2,17 @@ import React, { useState } from "react";
 import { GrUpdate } from "react-icons/gr";
 import { MdDeleteOutline } from "react-icons/md";
 import { Link } from "react-router-dom";
+import UpdateUserModal from "./UpdateUserModel";
 
 const UserTable = ({ users }) => {
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+
+    const handleUpdate = (user) => {
+        setSelectedUser(user);
+        setShowModal(true);
+    };
+
     const itemsPerPage = 5;
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -77,9 +86,10 @@ const UserTable = ({ users }) => {
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex space-x-2">
                                     <MdDeleteOutline className="text-pink text-2xl hover:text-blue-600 cursor-pointer" />
-                                    <GrUpdate className="text-accent text-2xl hover:text-blue-600 cursor-pointer" />
+                                    <GrUpdate className="text-accent text-2xl hover:text-blue-600 cursor-pointer" onClick={() => handleUpdate(user)} />
                                 </div>
                             </td>
+
                         </tr>
                     ))}
                 </tbody>
@@ -88,20 +98,23 @@ const UserTable = ({ users }) => {
             {totalPages > 1 && (
                 <div className="mt-4 flex justify-center items-center space-x-2">
                     {Array.from({ length: totalPages }, (_, i) => (
-                        <button
+                        <span class=" bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
                             key={i + 1}
                             className={`px-1 py-1 border border-gray-300 rounded-md focus:outline-none ${currentPage === i + 1
-                                ? "bg-blue-500 text-white"
-                                : "bg-white text-gray-700 hover:bg-gray-100"
+                                ? "bg-blue-500 text-white text-xs font-medium inline-flex items-center rounded-md px-2 py-1 ring-1 ring-inset ring-gray-500/10"
+                                : "bg-white text-gray-700 text-xs font-medium hover:bg-gray-100 inline-flex items-center rounded-md px-2 py-1 ring-1 ring-inset ring-gray-500/10"
                                 }`}
                             onClick={() => handlePageChange(i + 1)}
                         >
                             {i + 1}
-                        </button>
+                        </span>
                     ))}
                 </div>
             )}
+            {showModal && <UpdateUserModal user={selectedUser} onClose={() => setShowModal(false)} />}
+
         </div>
+
     );
 };
 

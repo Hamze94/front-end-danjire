@@ -14,13 +14,15 @@ import { MdOutlineWbSunny } from 'react-icons/md';
 import { toggleDarkMode } from '../redux/features/darkModeSlice';
 
 export default function Navbar() {
+    const [searchTerm, setSearchTerm] = useState('');
+    const products = useSelector(state => state.products);
     const { items } = useSelector((state) => state.items)
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
     let cartCount = items.length;
-    const token = useSelector(state => state.auth.token); // Accessing authentication token from Redux store
-
+    const token = useSelector(state => state.auth.token);
+    // Accessing authentication token from Redux store
     useEffect(() => {
         if (token) {
             const decodedToken = jwtDecode(token);
@@ -89,6 +91,7 @@ export default function Navbar() {
                         <a href="/shop">Shop</a>
                         <a href="/users">users</a>
                         <a href="/admin">Admin</a>
+                        <a href="/login" className='float-right'>Login</a>
                     </ul>
                 </div>
             </div>
