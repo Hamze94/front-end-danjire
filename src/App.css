@@ -1,7 +1,18 @@
-body{
-  --tw-bg-opacity: 1;
- background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-}
+body {
+    /* Light mode background color */
+    --light-bg-color: rgb(243, 244, 246);
+  
+    /* Dark mode background color */
+    --dark-bg-color: #08172c; /* Example dark mode background color */
+  
+    /* Set the background color based on darkMode state */
+    background-color: var(--light-bg-color); /* Default to light mode */
+  }
+  
+  body.dark-mode {
+    /* Apply dark mode background color when dark mode is enabled */
+    background-color: var(--dark-bg-color);
+  }
 
 .hide-scroll-bar {
         -ms-overflow-style: none;

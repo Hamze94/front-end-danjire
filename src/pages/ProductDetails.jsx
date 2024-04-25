@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaHeart, FaShoppingCart } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Loading from '../components/Loading';
 import { addItem } from '../redux/features/cartSlice'; // Import the addItem action
+import { DarkModeContext } from '../contex/DarkModeContex';
 
 const myProducts = [
     {
@@ -70,6 +71,7 @@ const myProducts = [
     },
 ];
 const ProductDetails = () => {
+    const { darkMode } = useContext(DarkModeContext)
     const dispatch = useDispatch();
     const { productId } = useParams();
     const { products } = useSelector(state => state.products);
@@ -91,21 +93,17 @@ const ProductDetails = () => {
         <>
             <Navbar />
             <div className="container mx-auto my-6">
-                <div className="bg-white p-6 shadow-md rounded-md">
+                <div className={` ${darkMode ? 'bg-[#1e1e1e] text-white' : 'bg-white'} p-6 shadow-md rounded-md`}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <img src={product.imageUrl} alt={product.name} className="w-full mb-6 rounded-md shadow-md" />
                         </div>
                         <div>
                             <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
-                            <p className="text-gray-700 mb-4">{product.description}</p>
-                            <p className="text-gray-700 mb-4">Price: {product.price}</p>
-                            <div className="flex items-center mb-4">
-                                <span className="mr-2">Quantity:</span>
-                                <input type="number" className="border border-gray-300 px-4 py-2 w-16 rounded" defaultValue="1" min="1" />
-                            </div>
+                            <p className=" mb-4">{product.description}</p>
+                            <p className=" mb-4">Price: {product.price}</p>
+
                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mr-4" onClick={() => handleAddToCart(product)}>Add to Cart</button>
-                            <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md">Add to Wishlist</button>
                         </div>
                     </div>
                     {/* Featured Products Section */}
@@ -115,8 +113,8 @@ const ProductDetails = () => {
                             <div className="flex flex-nowrap ml-5">
                                 {myProducts.map(product => (
                                     <div key={product.id} className="inline-block px-3">
-                                        <div className="w-64  max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                                            <img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
+                                        <div className={`w-64  max-w-xs overflow-hidden rounded-lg shadow-md ${darkMode ? 'bg-primary' : 'bg-white'}  hover:shadow-xl transition-shadow duration-300 ease-in-out`}>
+                                            < img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
                                             <div className="p-4">
                                                 <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
                                                 <p className="text-gray-700 mb-2">{product.price}</p>
@@ -132,7 +130,7 @@ const ProductDetails = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
             <Footer />
         </>
     );

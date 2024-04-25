@@ -12,7 +12,9 @@ export default function AddCategoryModel({ onClose, updateCategoryData }) {
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
     const onSubmit = (data) => {
+        console.log(data)
         if (updateCategoryData) {
+
             dispatch(updateCategory({ categoryId: updateCategoryData._id, updatedCategory: data }));
         } else {
             dispatch(addCategory(data));

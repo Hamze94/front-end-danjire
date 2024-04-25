@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
     incrementItem,
@@ -14,20 +14,35 @@ import { fetchAllUsers } from "../redux/features/usersSlice";
 import { createOrder } from "../redux/features/salesSlice";
 import { useNavigate } from "react-router-dom";
 import { addTransaction } from "../redux/features/transactionsSlice";
+import { useIsAdmin } from "../auth"; // Import the useIsAdmin hook
+import { jwtDecode } from "jwt-decode";
+import { DarkModeContext } from "../contex/DarkModeContex";
 
 const CartPage = () => {
+    const { darkMode } = useContext(DarkModeContext);
     const users = useSelector((state) => state.users.users);
     const [selectedUser, setSelectedUser] = useState("");
     const [selectedProducts, setSelectedProducts] = useState([]);
+    const isAdmin = useIsAdmin(); // Use the useIsAdmin hook to determine admin status
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const cartItems = useSelector((state) => state.items.items);
+
     useEffect(() => {
         setSelectedProducts(cartItems); // Set selected products to cart items
         dispatch(fetchAllUsers());
         dispatch(fetchCardByUserId(selectedUser));
 
-    }, [dispatch, cartItems, selectedUser]);
+        // If user is not admin, set selected user to logged-in user
+        if (!isAdmin) {
+            const accessToken = localStorage.getItem('accessToken');
+            if (accessToken) {
+                const decodedToken = jwtDecode(accessToken);
+                setSelectedUser(decodedToken.user._doc._id);
+            }
+        }
+    }, [dispatch, cartItems, selectedUser, isAdmin]);
+
     const handleIncrement = (productId) => {
         dispatch(incrementItem(productId));
     };
@@ -42,10 +57,13 @@ const CartPage = () => {
             0
         );
     };
+
     const handleRemove = (productId) => {
         dispatch(removeItem(productId)); // Dispatch removeItem action with product ID
     };
+
     const { userCard } = useSelector((state) => state.cards);
+
     const handleCheckout = () => {
         const cardId = userCard._id
         const totalAmount = getTotalPrice();
@@ -56,6 +74,7 @@ const CartPage = () => {
             type: "ORDER",
             amount: totalAmount,
         };
+
         if (selectedUser) {
             // Dispatch action to add transaction
             dispatch(addTransaction(transactionData));
@@ -69,36 +88,34 @@ const CartPage = () => {
             dispatch(createOrder(order));
 
             navigate("/receipt", { state: { order } });
-            dispatch(clearCart())
-
+            dispatch(clearCart());
         }
-
-
     };
 
     return (
         <>
             <Navbar />
             <div className="min-h-screen flex justify-center items-center">
-                <div className="mx-10 bg-white rounded-md w-1/2 p-4 my-2 items-center">
+                <div className={`mx-10 ${darkMode ? 'bg-primary text-white' : ' bg-white'} rounded-md w-1/2 p-4 my-2 items-center`}>
                     <h2 className="text-xl font-bold mb-4">Cart</h2>
                     {cartItems.length === 0 ? (
                         <p>Your cart is empty</p>
                     ) : (
                         <>
-                            <select
-                                value={selectedUser}
-                                onChange={(e) => setSelectedUser(e.target.value)}
-                                className="w-full py-2 px-4 border rounded-md"
-                            >
-                                <option value="">Select User</option>
-                                {users.map((user) => (
-                                    <option key={user._id} value={user._id}>
-                                        {user.name}
-                                    </option>
-                                ))}
-                            </select>
-                            {selectedUser && ( // Check if a user is selected
+                            {isAdmin ? ( // Render select option only if user is admin
+                                <select
+                                    value={selectedUser}
+                                    onChange={(e) => setSelectedUser(e.target.value)}
+                                    className="w-full py-2 px-4 text-black border rounded-md"
+                                >
+                                    <option value="">Select User</option>
+                                    {users.map((user) => (
+                                        <option className="text-black" key={user._id} value={user._id}>
+                                            {user.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
                                 <p className="mt-3">
                                     Selected User:{" "}
                                     {users.find((user) => user._id === selectedUser)?.name}

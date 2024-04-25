@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../Loading';
 import { fetchUserTransactions } from '../../redux/features/transactionsSlice';
+import { DarkModeContext } from '../../contex/DarkModeContex';
 
 const TransactionList = ({ userId, onUpdate }) => {
     const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const TransactionList = ({ userId, onUpdate }) => {
     if (loading) {
         return <Loading />;
     }
+    const { darkMode } = useContext(DarkModeContext)
 
     return (
         <div className="container mx-auto my-2">
@@ -34,7 +36,7 @@ const TransactionList = ({ userId, onUpdate }) => {
                 </thead>
                 <tbody>
                     {userTransactions.map((transaction) => (
-                        <tr key={transaction._id} className={`border-b  border-gray-200 ${transaction.type === 'DEPOSIT' ? "" : 'bg-red-50'}`}>
+                        <tr key={transaction._id} className={`border-b border-gray-200 ${darkMode && transaction.type !== 'DEPOSIT' ? 'bg-[#400000] text-white' : (transaction.type !== 'DEPOSIT' ? 'bg-red-50' : '')}`}>
                             <td className="px-6 py-4 whitespace-nowrap">${transaction.amount}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{new Date(transaction.date).toLocaleDateString()}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{transaction.type}</td>

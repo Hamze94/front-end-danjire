@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useIsAdmin } from "../auth";
@@ -6,10 +6,9 @@ import { FaPlus } from "react-icons/fa";
 import AddUserModel from "../components/user/AddUserModel";
 import UserList from "../components/user/UsersList";
 import UsersCount from "../components/user/UsersCount";
-import { useDispatch, useSelector } from "react-redux";
+import { DarkModeContext } from "../contex/DarkModeContex";
 
 export default function UsersPage() {
-    const darkMode = useSelector((state) => state.mode);
 
 
     const [showModal, setShowModal] = useState(false);
@@ -29,6 +28,7 @@ export default function UsersPage() {
             </>
         );
     }
+    const { darkMode } = useContext(DarkModeContext)
 
     return (
         <div>

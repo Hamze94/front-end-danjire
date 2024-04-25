@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories, deleteCategory } from "../../redux/features/categoriesSlice";
 import { FaPlus } from "react-icons/fa";
@@ -8,6 +8,7 @@ import { GrUpdate } from "react-icons/gr";
 import AddCategoryModel from "./AddCategoryModel";
 import { useIsAdmin } from "../../auth";
 import ConfirmationModal from "../ConfirmationModal ConfirmationModal ";
+import { DarkModeContext } from "../../contex/DarkModeContex";
 
 export default function Categories({ handleFilterByCategory }) {
     const isAdmin = useIsAdmin();
@@ -64,6 +65,7 @@ export default function Categories({ handleFilterByCategory }) {
     if (error) {
         return <div>{error}</div>;
     }
+    const { darkMode } = useContext(DarkModeContext)
     return (
         <div>
             {/* Sidebar */}
@@ -77,9 +79,9 @@ export default function Categories({ handleFilterByCategory }) {
                         Add Category
                     </button>
                 )}
-                <div className="bg-white rounded-md shadow-md">
-                    <div className="p-4 border-b border-gray-300">
-                        <h2 className="text-lg font-semibold mb-2">Categories</h2>
+                <div className={`${darkMode ? 'dark:bg-primary text-white rounded-md shadow-md' : 'rounded-md shadow-md bg-white'}rounded-md shadow-md`} >
+                    <div className={` ${darkMode ? 'dark:bg-primary p-1 text-white' : ''} bg-white rounded-md shadow-md`}>
+                        <h2 className="text-lg font-semibold mb-2 p-1">Categories</h2>
                     </div>
                     <ul>
                         {categories.map((category) => (
@@ -107,18 +109,20 @@ export default function Categories({ handleFilterByCategory }) {
                     </ul>
                 </div>
             </div>
-            {showModal && (
-                <AddCategoryModel
-                    onClose={handleToggleModal}
-                    updateCategoryData={selectedCategory}
-                />
-            )}
+            {
+                showModal && (
+                    <AddCategoryModel
+                        onClose={handleToggleModal}
+                        updateCategoryData={selectedCategory}
+                    />
+                )
+            }
             {/* Render ConfirmationModal */}
             <ConfirmationModal
                 isOpen={showConfirmationModal}
                 onClose={() => setShowConfirmationModal(false)}
                 onConfirm={handleDeleteCategory}
             />
-        </div>
+        </div >
     );
 }

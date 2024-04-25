@@ -55,7 +55,7 @@ const UserOrderList = ({ userId }) => {
                     <tbody>
                         {productsMap.map((order, index) => (
                             <tr key={index}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm">
                                     <div className="flex items-center">
                                         {/* Display product images and names */}
                                         {order.products.map((product, i) => (
@@ -66,7 +66,7 @@ const UserOrderList = ({ userId }) => {
                                         ))}
                                     </div>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-6 py-4 whitespace-nowrap  text-lg">
                                     {order.orderDate}
                                 </td>
                             </tr>

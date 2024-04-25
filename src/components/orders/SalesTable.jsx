@@ -32,7 +32,7 @@ const SalesTable = ({ sales }) => {
                             <td className="px-6 py-4 whitespace-nowrap">
                                 {Object.entries(sale.productCounts).map(([productName, count]) => (
                                     <div key={productName}>
-                                        {count > 1 ? `${count} ${productName}` : productName}
+                                        {count > 1 ? `${count} ${productName} ` : productName}
                                     </div>
                                 ))}
                             </td>

@@ -10,19 +10,12 @@ const initialState = {
 
 export const fetchCardByUserId = createAsyncThunk(
     'cards/fetchCardByUserId',
-    async (userId, thunkAPI) => {
-        const { getState } = thunkAPI;
-        const state = getState();
-        const token = state.auth.token;
+    async (userId) => {
+        console.log(userId)
         try {
-            const response = await axios.get(`http://localhost:3000/cards/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await axios.get(`http://localhost:3000/cards/${userId}`);
             return response.data;
         } catch (error) {
-            // Handle specific error types here (e.g., network errors, etc.)
             console.error('Error fetching cards:', error);
             throw error;
         }

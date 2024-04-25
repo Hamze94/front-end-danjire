@@ -21,12 +21,7 @@ export const addCategory = createAsyncThunk(
     'categories/addCategory',
     async (categoryData, { rejectWithValue }) => {
         try {
-            const token = state.auth.token;
-            const response = await axios.post('http://localhost:3000/categories/create', categoryData, {
-                headers: {
-                    Authorization: `Bearer ${token}`, // Include the token in the request headers
-                },
-            });
+            const response = await axios.post('http://localhost:3000/categories/create', categoryData)
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);

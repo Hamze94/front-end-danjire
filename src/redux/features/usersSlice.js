@@ -6,6 +6,7 @@ export const fetchAllUsers = createAsyncThunk(
     'users/fetchAllUsers',
     async () => {
         const response = await axios.get('http://localhost:3000/users');
+        console.log(response)
         return response.data;
     }
 );
@@ -89,6 +90,7 @@ export const fetchUserCard = createAsyncThunk(
 
 const initialState = {
     users: [],
+    user: null,
     card: null,
     userOrders: [],
     loading: false,
@@ -108,7 +110,7 @@ const userSlice = createSlice({
             })
             .addCase(fetchAllUsers.fulfilled, (state, action) => {
                 state.loading = false;
-                state.users = action.payload;
+                state.users = (action.payload);
             })
             .addCase(fetchAllUsers.rejected, (state, action) => {
                 state.loading = false;

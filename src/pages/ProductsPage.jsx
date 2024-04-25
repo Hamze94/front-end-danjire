@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, deleteProduct, filterProductsByCategory } from "../redux/features/productsSlice"; // Import the filterProductsByCategory action
 import Loading from "../components/Loading";
@@ -15,15 +15,13 @@ import { Link } from "react-router-dom";
 import { addItem } from "../redux/features/cartSlice"; // Import the addItem action
 import { useIsAdmin } from "../auth";
 import ConfirmationModal from "../components/ConfirmationModal ConfirmationModal ";
+import { DarkModeContext } from "../contex/DarkModeContex";
 
 const ProductsPage = () => {
-    // Function to filter products by category
-    const handleFilterByCategory = (categoryId) => {
-        dispatch(filterProductsByCategory(categoryId));
-    };
 
     const isAdmin = useIsAdmin(); // Call the custom hook
     const dispatch = useDispatch();
+    const { darkMode } = useContext(DarkModeContext)
     const [selectedProduct, setSelectedProduct] = useState(null); // Stores selected product for update
     const { products, loading, error } = useSelector((state) => state.products);
     const [showModal, setShowModal] = useState(false);
@@ -44,7 +42,10 @@ const ProductsPage = () => {
         // Handle other errors
         return <div>Error: {error}</div>;
     }
-
+    // Function to filter products by category
+    const handleFilterByCategory = (categoryId) => {
+        dispatch(filterProductsByCategory(categoryId));
+    };
     const handleToggleModal = () => {
         setShowModal(!showModal);
         setSelectedProduct(null); // Clear selected product when closing modal
@@ -85,11 +86,10 @@ const ProductsPage = () => {
             console.warn("You are not authorized to update products");
         }
     };
-
     return (
         <>
             <Navbar />
-            <div className="bg-gray-100 mt-0 pt-2">
+            <div className="mt-0 pt-2">
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-5 gap-5">
                     <Categoreis handleFilterByCategory={handleFilterByCategory} />
                     {/* Main Content */}
@@ -117,7 +117,7 @@ const ProductsPage = () => {
                                 products.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="bg-white rounded-md overflow-hidden shadow-md transform transition-transform hover:scale-105 relative z-10"
+                                        className={`bg-white ${darkMode ? 'dark:bg-primary text-white' : ''} rounded-md overflow-hidden shadow-md transform transition-transform hover:scale-105 relative z-10`}
                                     >
                                         <Link to={`/productdetails/${product._id}`}>
                                             <img
@@ -130,7 +130,7 @@ const ProductsPage = () => {
                                             <h3 className="text-lg font-semibold mb-2">
                                                 {product.name}
                                             </h3>
-                                            <p className="text-gray-700 mb-2">
+                                            <p className=" mb-2">
                                                 ${product.sellingPrice}
                                             </p>
                                             <div className="flex justify-between items-center">
@@ -148,7 +148,7 @@ const ProductsPage = () => {
                                                             className="text-accent hover:text-blue-600 cursor-pointer"
                                                             onClick={() => handleUpdateClick(product)}
                                                         />
-                                                        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{product.quantity}</span>
+                                                        <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{product.quantity}</span>
 
                                                     </>
                                                 )}
